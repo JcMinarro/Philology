@@ -64,10 +64,10 @@ jobs:
           name: Test Philology lib
           command: ./gradlew philology:test --stacktrace -PdisablePreDex
       - store_artifacts:
-          path: app/build/reports
+          path: philology/build/reports
           destination: reports
       - store_test_results:
-          path: app/build/test-results
+          path: philology/build/test-results
 
   build_sample:
     <<: *defaults
