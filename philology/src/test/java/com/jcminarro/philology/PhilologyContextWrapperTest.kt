@@ -2,7 +2,7 @@ package com.jcminarro.philology
 
 import android.content.Context
 import android.content.res.Resources
-import android.support.v7.widget.VectorEnabledTintResources
+import android.support.v7.app.AppCompatDelegate
 import com.nhaarman.mockito_kotlin.doReturn
 import org.amshove.kluent.When
 import org.amshove.kluent.`should be instance of`
@@ -24,13 +24,13 @@ class PhilologyContextWrapperTest {
 
     @Test
     fun `Should return a PhilologyResources`() {
-        VectorEnabledTintResources.shouldBeUsed(false)
+        AppCompatDelegate.shouldBeUsed(false)
         philologyContextWrapper.resources `should be instance of` PhilologyResources::class
     }
 
     @Test
     fun `Should return a PhilologyVectorEnabledTintResources`() {
-        VectorEnabledTintResources.shouldBeUsed(true)
+        AppCompatDelegate.shouldBeUsed(true)
         philologyContextWrapper.resources `should be instance of` PhilologyVectorEnabledTintResources::class
     }
 }
