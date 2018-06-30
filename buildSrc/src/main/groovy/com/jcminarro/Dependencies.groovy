@@ -8,7 +8,7 @@ class Dependencies {
     private static String JUNIT_VERSION = '4.12'
     private static String ANDROID_TEST_RUNNER_VERSION = '1.0.2'
     private static String ESPRESSO_VERSION = '3.0.2'
-    private static String MOKITO_VERSION = '2.9.0'
+    private static String MOKITO_VERSION = '2.18.0'
     private static String KLUENT_VERSION = '1.28'
     private static String MOKITO_KOTLIN_VERSION = '1.5.0'
 
