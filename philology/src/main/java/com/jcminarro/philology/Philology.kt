@@ -5,8 +5,8 @@ import android.content.ContextWrapper
 import java.util.Locale
 
 object Philology {
-    val repositoryMap = mutableMapOf<Locale, PhilologyRepository>()
-    var factory: PhilologyRepositoryFactory = object : PhilologyRepositoryFactory{
+    private val repositoryMap = mutableMapOf<Locale, PhilologyRepository>()
+    private var factory: PhilologyRepositoryFactory = object : PhilologyRepositoryFactory{
         override fun getPhilologyRepository(locale: Locale): PhilologyRepository? = null
     }
 
