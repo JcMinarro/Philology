@@ -9,5 +9,8 @@ import android.support.v7.widget.VectorEnabledTintResources
 @SuppressLint("RestrictedApi")
 internal class PhilologyVectorEnabledTintResources(baseContext: Context, baseResources: Resources)
     : VectorEnabledTintResources(baseContext, baseResources) {
+    private val resourcesUtil = ResourcesUtil(baseResources)
 
+    override fun getText(id: Int): CharSequence = resourcesUtil.getText(id)
+    override fun getString(id: Int): String = resourcesUtil.getString(id)
 }
