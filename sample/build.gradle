@@ -28,6 +28,7 @@ dependencies {
 
     implementation Dependencies.kotlinSTDLib
     implementation Dependencies.appCompat
+    implementation Dependencies.viewPump
 
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     testImplementation Dependencies.jUnit

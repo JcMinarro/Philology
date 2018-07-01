@@ -34,6 +34,7 @@ android {
 dependencies {
     implementation Dependencies.kotlinSTDLib
     implementation Dependencies.appCompat
+    implementation Dependencies.viewPump
 
     testImplementation Dependencies.jUnit
     testImplementation Dependencies.mockito
