@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Philology Sample</string>
+    <string name="label">It is the default value that we have into our strings resoureces file</string>
 </resources>
