@@ -16,9 +16,13 @@ object Philology {
     private var factory: PhilologyRepositoryFactory = object : PhilologyRepositoryFactory{
         override fun getPhilologyRepository(locale: Locale): PhilologyRepository? = null
     }
+    private var viewTransformerFactory: ViewTransformerFactory = emptyViewTransformerFactory
 
-    fun init(factory: PhilologyRepositoryFactory) {
+    @JvmOverloads
+    fun init(factory: PhilologyRepositoryFactory,
+             viewTransformerFactory: ViewTransformerFactory = emptyViewTransformerFactory) {
         this.factory = factory
+        this.viewTransformerFactory = viewTransformerFactory
         repositoryMap.clear()
     }
 
@@ -29,19 +33,32 @@ object Philology {
             factory.getPhilologyRepository(locale)?.also {repositoryMap[locale] = it} ?:
                     emptyPhilologyRepository
 
-    internal fun getViewTransformer(view: View): ViewTransformer = when (view) {
-        is Toolbar -> SupportToolbarViewTransformer
-        is android.widget.Toolbar -> ToolbarViewTransformer
-        is TextView -> TextViewTransformer
-        else -> NoneViewTransformer
-
-    }
+    internal fun getViewTransformer(view: View): ViewTransformer =
+            viewTransformerFactory.getViewTransformer(view) ?:
+            internalViewTransformerFactory.getViewTransformer(view)
 }
 
 interface PhilologyRepositoryFactory {
     fun getPhilologyRepository(locale: Locale): PhilologyRepository?
 }
 
+interface ViewTransformerFactory {
+    fun getViewTransformer(view: View): ViewTransformer?
+}
+
 private val emptyPhilologyRepository = object : PhilologyRepository{
     override fun getText(key: String): CharSequence? = null
+}
+
+private val emptyViewTransformerFactory = object : ViewTransformerFactory {
+    override fun getViewTransformer(view: View): ViewTransformer? = null
+}
+
+private val internalViewTransformerFactory = object : ViewTransformerFactory{
+    override fun getViewTransformer(view: View): ViewTransformer = when (view) {
+        is Toolbar -> SupportToolbarViewTransformer
+        is android.widget.Toolbar -> ToolbarViewTransformer
+        is TextView -> TextViewTransformer
+        else -> NoneViewTransformer
+    }
 }
