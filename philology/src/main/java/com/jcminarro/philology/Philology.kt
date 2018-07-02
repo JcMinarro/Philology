@@ -19,13 +19,14 @@ object Philology {
 
     fun init(factory: PhilologyRepositoryFactory) {
         this.factory = factory
+        repositoryMap.clear()
     }
 
     fun wrap(baseContext: Context): ContextWrapper = PhilologyContextWrapper(baseContext)
 
     internal fun getPhilologyRepository(locale: Locale): PhilologyRepository =
             repositoryMap[locale] ?:
-            factory.getPhilologyRepository(locale) ?:
+            factory.getPhilologyRepository(locale)?.also {repositoryMap[locale] = it} ?:
                     emptyPhilologyRepository
 
     internal fun getViewTransformer(view: View): ViewTransformer = when (view) {
