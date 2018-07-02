@@ -69,6 +69,27 @@ jobs:
       - store_test_results:
           path: philology/build/test-results
 
+  lint_philology:
+    <<: *defaults
+    steps:
+      - checkout
+      - run: *configure_gradle
+      - restore_cache:
+          key: jars--{{ checksum "build.gradle" }}-{{ checksum  "philology/build.gradle" }}-{{ checksum  "sample/build.gradle" }}
+      - run: *download_gradle_dependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars--{{ checksum "build.gradle" }}-{{ checksum  "philology/build.gradle" }}-{{ checksum  "sample/build.gradle" }}
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run lint Philology lib
+          command: ./gradlew philology:lint --stacktrace -PdisablePreDex
+      - store_artifacts:
+          path: philology/build/reports
+          destination: reports
+
   build_sample:
     <<: *defaults
     steps:
@@ -96,6 +117,9 @@ workflows:
     jobs:
       - build_philology
       - test_philology:
+          requires:
+            - build_philology
+      - lint_philology:
           requires:
             - build_philology
       - build_sample:
