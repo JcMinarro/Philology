@@ -1,0 +1,48 @@
+import com.jcminarro.Config
+
+apply plugin: 'maven'
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(id: 'bintray-jcminarro-maven', url: "https://api.bintray.com/maven/jcminarro/maven/$Config.pomArtifactId") {
+                authentication(userName: BINTRAY_USER, password: BINTRAY_API_KEY)
+            }
+            pom.project {
+                groupId=Config.group
+                version=Config.versionName
+                artifactId Config.pomArtifactId
+                name Config.pomName
+                description Config.pomDescription
+                url Config.pomURL
+
+                licenses {
+                    license {
+                        name Config.pomLicenceName
+                        url Config.pomLicenceUrl
+                        distribution Config.pomLicenceDist
+                    }
+                }
+
+                scm {
+                    url Config.pomSCMURL
+                    connection Config.pomSCMConnection
+                    developerConnection Config.pomSCMCDevonnection
+                }
+
+                developers {
+                    developer {
+                        id Config.pomDeveloperId
+                        name Config.pomDeveloperName
+                        email Config.pomDeveloperEmail
+                    }
+                }
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}

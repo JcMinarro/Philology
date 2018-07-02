@@ -111,6 +111,29 @@ jobs:
           path: sample/build/outputs/apk/
           destination: apks
 
+  deploy_philology:
+    <<: *defaults
+    steps:
+      - checkout
+      - run: *configure_gradle
+      - restore_cache:
+          key: jars--{{ checksum "build.gradle" }}-{{ checksum  "philology/build.gradle" }}-{{ checksum  "sample/build.gradle" }}
+      - run: *download_gradle_dependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars--{{ checksum "build.gradle" }}-{{ checksum  "philology/build.gradle" }}-{{ checksum  "sample/build.gradle" }}
+      - attach_workspace:
+          at: .
+      - run:
+          name: Deploy Philology lib
+          command: ./gradlew philology:uploadArchives -PBINTRAY_API_KEY=$BINTRAY_API_KEY -PBINTRAY_USER=$BINTRAY_USER --stacktrace -PdisablePreDex
+      - store_artifacts:
+          path: philology/build/reports
+          destination: reports
+      - store_test_results:
+          path: philology/build/test-results
+
 workflows:
   version: 2
   test_and_build:
@@ -125,3 +148,11 @@ workflows:
       - build_sample:
           requires:
             - build_philology
+      - deploy_philology:
+          requires:
+            - lint_philology
+            - test_philology
+          filters:
+            branches:
+              only:
+                - master

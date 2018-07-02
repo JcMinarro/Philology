@@ -4,6 +4,7 @@ import com.jcminarro.Dependencies
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply from: 'deploy.gradle'
 
 android {
     compileSdkVersion Config.compileSdkVersion
