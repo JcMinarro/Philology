@@ -54,6 +54,7 @@ private val emptyViewTransformerFactory = object : ViewTransformerFactory {
     override fun getViewTransformer(view: View): ViewTransformer? = null
 }
 
+@SuppressWarnings("NewApi")
 private val internalViewTransformerFactory = object : ViewTransformerFactory{
     override fun getViewTransformer(view: View): ViewTransformer = when (view) {
         is Toolbar -> SupportToolbarViewTransformer

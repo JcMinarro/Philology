@@ -22,7 +22,9 @@ interface PhilologyRepository {
     fun getText(key: String): CharSequence?
 }
 
+@SuppressWarnings("NewApi")
 private fun Resources.currentLocale(): Locale = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
+    @Suppress("DEPRECATION")
     configuration.locale
 } else {
     configuration.locales[0]

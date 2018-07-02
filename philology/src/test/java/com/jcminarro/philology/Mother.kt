@@ -15,6 +15,7 @@ import org.mockito.Mockito
 import java.util.Locale
 
 fun createConfiguration(locale: Locale = Locale.ENGLISH): Configuration = mock<Configuration>().apply {
+    @Suppress("DEPRECATION")
     this.locale = locale
     When calling this.locales doReturn LocaleList(locale)
 }

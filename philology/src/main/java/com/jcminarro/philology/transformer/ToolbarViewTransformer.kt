@@ -1,10 +1,12 @@
 package com.jcminarro.philology.transformer
 
+import android.annotation.SuppressLint
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Toolbar
 import com.jcminarro.philology.ViewTransformer
 
+@SuppressLint("NewApi")
 internal object ToolbarViewTransformer : ViewTransformer {
     private const val TITLE = "title"
     private const val SUBTITLE = "subtitle"
