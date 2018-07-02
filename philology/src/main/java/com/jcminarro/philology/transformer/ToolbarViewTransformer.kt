@@ -17,8 +17,8 @@ internal object ToolbarViewTransformer : ViewTransformer {
     private fun Toolbar.reword(attributeSet: AttributeSet) {
         attributeSet.forEach {
             when (attributeSet.getAttributeName(it)) {
-                TITLE -> ToolbarViewTransformer.setTextIfExists(attributeSet, it, this::setTitle)
-                SUBTITLE -> ToolbarViewTransformer.setTextIfExists(attributeSet, it, this::setSubtitle)
+                TITLE -> setTextIfExists(attributeSet, it, this::setTitle)
+                SUBTITLE -> setTextIfExists(attributeSet, it, this::setSubtitle)
             }
         }
     }

@@ -4,8 +4,10 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.support.v7.widget.Toolbar
 import android.view.View
+import android.widget.TextView
 import com.jcminarro.philology.transformer.NoneViewTransformer
 import com.jcminarro.philology.transformer.SupportToolbarViewTransformer
+import com.jcminarro.philology.transformer.TextViewTransformer
 import com.jcminarro.philology.transformer.ToolbarViewTransformer
 import java.util.Locale
 
@@ -29,6 +31,7 @@ object Philology {
     internal fun getViewTransformer(view: View): ViewTransformer = when (view) {
         is Toolbar -> SupportToolbarViewTransformer
         is android.widget.Toolbar -> ToolbarViewTransformer
+        is TextView -> TextViewTransformer
         else -> NoneViewTransformer
 
     }

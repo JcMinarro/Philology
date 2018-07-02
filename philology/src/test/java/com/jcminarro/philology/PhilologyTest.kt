@@ -1,8 +1,10 @@
 package com.jcminarro.philology
 
 import android.support.v7.widget.Toolbar
+import android.widget.TextView
 import com.jcminarro.philology.transformer.NoneViewTransformer
 import com.jcminarro.philology.transformer.SupportToolbarViewTransformer
+import com.jcminarro.philology.transformer.TextViewTransformer
 import com.jcminarro.philology.transformer.ToolbarViewTransformer
 import org.amshove.kluent.`should be instance of`
 import org.amshove.kluent.`should be`
@@ -29,5 +31,10 @@ class PhilologyTest {
     @Test
     fun `Should provide a ToolbarViewTransformer`() {
         Philology.getViewTransformer(mock<android.widget.Toolbar>()) `should be` ToolbarViewTransformer
+    }
+
+    @Test
+    fun `Should provide a TextViewTransformer`() {
+        Philology.getViewTransformer(mock<TextView>()) `should be` TextViewTransformer
     }
 }
