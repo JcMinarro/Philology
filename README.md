@@ -1,0 +1,235 @@
+Philology 
+=========
+[![CircleCI](https://circleci.com/gh/JcMinarro/Philology/tree/master.svg?style=svg)](https://circleci.com/gh/JcMinarro/Philology/tree/master)  [ ![Download](https://api.bintray.com/packages/jcminarro/maven/Philology/images/download.svg) ](https://bintray.com/jcminarro/maven/Philology/_latestVersion) [![ko-fi](https://www.ko-fi.com/img/donate_sm.png)](https://ko-fi.com/A50744AD)
+
+An easy way to dynamically replace Strings of your Android App or provide new languages Over-the-air without needed to publish a new release on Google Play.
+
+## Getting Started
+
+### Dependency
+Philology use [ViewPump](https://github.com/InflationX/ViewPump) library to intercept the view inflate process and reword strings resources. It allows you to use other libraries like [Calligraphy](https://github.com/InflationX/Calligraphy) that intercept the view inflate process
+
+```groovy
+dependencies {
+    compile 'com.jcminarro:Philology:1.0.0'
+    compile 'io.github.inflationx:viewpump:1.0.0'
+}
+```
+
+### Usage
+
+#### Initialize Philology and ViewPump
+Define your `PhilologyRepositoryFactory` who provides `PhilologyRepository` according with the selected `Locale` on the device.
+Kotlin:
+```Kotlin
+class App : Application() {
+    override fun onCreate() {
+        super.onCreate()
+// Init Philology with our PhilologyRepositoryFactory
+        Philology.init(MyPhilologyRepositoryFactory)
+// Add PhilologyInterceptor to ViewPump
+// If you are already using Calligraphy you can add both interceptors, there is no problem
+        ViewPump.init(ViewPump.builder().addInterceptor(PhilologyInterceptor).build())
+    }
+}
+
+object MyPhilologyRepositoryFactory : PhilologyRepositoryFactory {
+    override fun getPhilologyRepository(locale: Locale): PhilologyRepository? = when{
+        Locale.ENGLISH.language  == locale.language -> EnglishPhilologyRepository
+        Locale("es", "ES").language == locale.language -> SpanishPhilologyRepository
+// If we don't support a language we could return null as PhilologyRepository and
+// values from the strings resources file will be used
+        else -> null
+    }
+}
+
+object EnglishPhilologyRepository : PhilologyRepository {
+    override fun getText(key: String): CharSequence? = when (key) {
+        "label" -> "New value for the `label` key, it could be fetched from a database or an external API server"
+// If we don't want reword an strings we could return null and the value from the string resources file will be used
+        else -> null
+    }
+}
+
+object SpanishPhilologyRepository : PhilologyRepository { /* Implementation */ }
+```
+
+Java:
+```java
+public class App extends Application {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        PhilologyRepositoryFactory repositoryFactory = new MyPhilologyRepositoryFactory();
+        Philology.INSTANCE.init(repositoryFactory);
+        ViewPump.init(ViewPump.builder().addInterceptor(PhilologyInterceptor.INSTANCE).build());
+    }
+}
+
+public class MyPhilologyRepositoryFactory extends PhilologyRepositoryFactory {
+    @Nullable
+    @Override
+    public PhilologyRepository getPhilologyRepository(@NotNull Locale locale) {
+        if (Locale.ENGLISH.getLanguage().equals(locale.getLanguage())) {
+            return new EnglishPhilologyRepository();
+        }
+        return null;
+    }
+}
+
+public class EnglishPhilologyRepository extends PhilologyRepository {
+    @Nullable
+    @Override
+    public CharSequence getText(@NotNull String key) { /* Implementation */}
+}
+```
+
+#### Inject into Context
+Wrap the `Activity` Context.
+Kotlin:
+```kotlin
+class BaseActivity : AppCompatActivity() {
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(Philology.wrap(newBase)))
+    }
+}
+```
+
+Java:
+```java
+public class BaseActivity extends AppCompatActivity {
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(Philology.INSTANCE.wrap(newBase)));
+    }
+}
+```
+
+_That is all_
+
+#### CustomViews
+Philology allows you to reword your own CustomViews, the only that you need to do is provide an implementation of `ViewTransformer` that rewords the text fields used by your CustomView. The `Context` used to inflate your CustomView is already wrapped by the library, so, you can assign the `@StringRes` used on the `.xml` file that will be provided on the `reword()` method.
+
+Kotlin:
+```kotlin
+object MyCustomViewTransformer : ViewTransformer {
+    private const val MY_CUSTOM_ATTRIBUTE_NAME = "text"
+    override fun reword(view: View, attributeSet: AttributeSet): View = view.apply {
+        when (this) {
+            is MyCustomView -> reword(attributeSet)
+        }
+    }
+
+    private fun MyCustomView.reword(attributeSet: AttributeSet) {
+        attributeSet.forEach {
+            when (attributeSet.getAttributeName(it)) {
+                TEXT -> setTextIfExists(attributeSet, it, this::setTextToMyCustomView)
+            }
+        }
+    }
+}
+```
+
+Java:
+```java
+public class MyCustomViewTransformer extends ViewTransformer {
+    private static String MY_CUSTOM_ATTRIBUTE_NAME = "text";
+    @NotNull
+    @Override
+    public View reword(@NotNull final View view, @NotNull AttributeSet attributeSet) {
+        if (view instanceof MyCustomView) {
+            MyCustomView myCustomView = (MyCustomView) view;
+            for (int index=0; index<attributeSet.getAttributeCount(); index++) {
+                if (MY_CUSTOM_ATTRIBUTE_NAME.equals(attributeSet.getAttributeName(index))) {
+                    int resourceValue = attributeSet.getAttributeResourceValue(index, -1);
+                    if (resourceValue != -1) {
+                        myCustomView.setTextToMyCustomView(resourceValue))
+                    }
+                }
+            }
+        }
+        return view;
+    }
+}
+```
+
+After you implement your `ViewTransformer` you need to provide it to `Philology` injecting a `ViewTransformerFactory` by the `init()` method
+Kotlin:
+```kotlin
+class App : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        Philology.init(MyPhilologyRepositoryFactory, MyViewTransformerFactory)
+        ViewPump.init(ViewPump.builder().addInterceptor(PhilologyInterceptor.INSTANCE).build());
+    }
+}
+
+object MyViewTransformerFactory : ViewTransformerFactory{
+    override fun getViewTransformer(view: View): ViewTransformer = when (view) {
+        is MyCustomView -> MyCustomViewTransformer
+        else -> null
+    }
+}
+```
+
+Java:
+```java
+
+public class App extends Application {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        PhilologyRepositoryFactory repositoryFactory = new MyPhilologyRepositoryFactory();
+        ViewTransformerFactory viewTransformerFactory = new MyCustomViewTransformerFactory();
+        Philology.INSTANCE.init(repositoryFactory, viewTransformerFactory);
+        ViewPump.init(ViewPump.builder().addInterceptor(PhilologyInterceptor.INSTANCE).build());
+    }
+}
+
+public class MyCustomViewTransformerFactory implements ViewTransformerFactory {
+    @Nullable
+    @Override
+    public ViewTransformer getViewTransformer(@NotNull View view) {
+        if (view instanceof MyCustomView) {
+            return new MyViewTransformer();
+        }
+        return null;
+    }
+}
+```
+
+## Do you want to contribute?
+Feel free to add any useful feature to the library, we will be glad to improve it with your help.
+I'd love to hear about your use case too, especially if it's not covered perfectly.
+
+Developed By
+------------
+
+* Jc Miñarro  - <josecarlos.minarro@gmail.com>
+
+<a href="https://twitter.com/el_joker333">
+  <img alt="Follow me on Twitter" src="https://image.freepik.com/iconos-gratis/twitter-logo_318-40209.jpg" height="60" width="60"/>
+</a>
+<a href="https://www.linkedin.com/in/josecarlosminarrogil/">
+  <img alt="Add me to Linkedin" src="https://image.freepik.com/iconos-gratis/boton-del-logotipo-linkedin_318-84979.png" height="60" width="60"/>
+</a>
+<a href="https://medium.com/@jcminarro">
+  <img alt="Follow me on Twitter" src="https://cdn-images-1.medium.com/max/1600/1*emiGsBgJu2KHWyjluhKXQw.png" height="60" width="60"/>
+</a>
+
+License
+-------
+
+    Copyright 2018 Jc Miñarro
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
