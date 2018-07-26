@@ -4,6 +4,25 @@ Philology
 
 An easy way to dynamically replace Strings of your Android App or provide new languages Over-the-air without needed to publish a new release on Google Play.
 
+## Why should I be interested in Philology
+
+### How String resources work on Android?
+Android Resources provide us with an easy way to internationalise our App: a file with all the strings used by our App and a copy of it for every language the App is translated to. Android OS does the rest choosing the proper file depending on device's language.
+
+That is perfect and I don't want to stop using it.
+
+### The problem
+These strings are hardcoded inside our App. If there's a typo or you find a better way to express something, a new version of the App needs to be deployed to include the newer translation.
+This is a slow process and a poor user experience. We all know users take their time to update an app (if they ever do so) and there's also the time Google Play takes to make a new version of an app available to all users.
+
+### How Philology solves this problem?
+
+_Philology_ doesn't replace the way you are using resources in your current Android Development.
+Instead, it improves the process by intercepting the value returned from your **hardcoded translation** files inside of the app and check if there is a newer value in the server.
+This allows for typo fixing, better wording or even for adding a new language. All in real time, without releasing a new version of the App.
+
+With _Philology_ you could replace hardcoded texts instantly and win time before the new release is done.
+
 ## Getting Started
 
 ### Dependency
