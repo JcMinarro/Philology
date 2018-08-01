@@ -2,6 +2,7 @@ package com.jcminarro.philology
 
 import android.content.Context
 import android.content.ContextWrapper
+import android.os.Build
 import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.TextView
@@ -54,12 +55,27 @@ private val emptyViewTransformerFactory = object : ViewTransformerFactory {
     override fun getViewTransformer(view: View): ViewTransformer? = null
 }
 
-@SuppressWarnings("NewApi")
 private val internalViewTransformerFactory = object : ViewTransformerFactory{
-    override fun getViewTransformer(view: View): ViewTransformer = when (view) {
+    override fun getViewTransformer(view: View): ViewTransformer =
+            getNewApiViewTransformer(view) ?:
+                    getSupportedViewTransformer(view) ?:
+                    NoneViewTransformer
+
+    private fun getSupportedViewTransformer(view: View): ViewTransformer? = when (view) {
         is Toolbar -> SupportToolbarViewTransformer
-        is android.widget.Toolbar -> ToolbarViewTransformer
         is TextView -> TextViewTransformer
-        else -> NoneViewTransformer
+        else -> null
     }
+
+    @SuppressWarnings("NewApi")
+    private fun getNewApiViewTransformer(view: View): ViewTransformer? =
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                null
+            } else {
+                when (view) {
+                    is android.widget.Toolbar -> ToolbarViewTransformer
+                    else -> null
+                }
+            }
 }
+
