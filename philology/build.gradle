@@ -28,6 +28,8 @@ android {
         unitTests{
             includeAndroidResources = true
             all {
+                systemProperty 'robolectric.offline', 'true'
+                systemProperty 'robolectric.dependency.dir', "$rootDir/build/robolectricSdk"
                 testLogging {
                     events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
                 }
