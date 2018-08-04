@@ -24,11 +24,16 @@ android {
         }
     }
 
-    testOptions.unitTests.all {
-        testLogging {
-            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+    testOptions{
+        unitTests{
+            includeAndroidResources = true
+            all {
+                testLogging {
+                    events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+                }
+                setMaxParallelForks(Runtime.runtime.availableProcessors() ?: 1)
+            }
         }
-        setMaxParallelForks(Runtime.runtime.availableProcessors() ?: 1)
     }
 }
 
@@ -37,6 +42,7 @@ dependencies {
     implementation Dependencies.appCompat
     implementation Dependencies.viewPump
 
+    testImplementation Dependencies.robolectric
     testImplementation Dependencies.jUnit
     testImplementation Dependencies.mockito
     testImplementation Dependencies.mockitoKotlin
