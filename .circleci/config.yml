@@ -17,7 +17,7 @@ configure_gradle: &configure_gradle
     echo "org.gradle.jvmargs=-Xmx1536m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError" >> ~/.gradle/gradle.properties
 download_gradle_dependencies: &download_gradle_dependencies
   name: Download dependencies
-  command: ./gradlew dependencies
+  command: ./gradlew prefetchDependencies dependencies :philology:dependencies sample:dependencies
 restore_cache: &restore_cache
   key: jars--{{ checksum "build.gradle" }}-{{ checksum  "philology/build.gradle" }}-{{ checksum  "sample/build.gradle" }}-{{ checksum  "buildSrc/src/main/groovy/com/jcminarro/Dependencies.groovy" }}
 save_cache: &save_cache
