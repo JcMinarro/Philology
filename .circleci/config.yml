@@ -18,6 +18,12 @@ configure_gradle: &configure_gradle
 download_gradle_dependencies: &download_gradle_dependencies
   name: Download dependencies
   command: ./gradlew dependencies
+restore_cache: &restore_cache
+  key: jars--{{ checksum "build.gradle" }}-{{ checksum  "philology/build.gradle" }}-{{ checksum  "sample/build.gradle" }}-{{ checksum  "buildSrc/src/main/groovy/com/jcminarro/Dependencies.groovy" }}
+save_cache: &save_cache
+  paths:
+    - ~/.gradle
+  key: jars--{{ checksum "build.gradle" }}-{{ checksum  "philology/build.gradle" }}-{{ checksum  "sample/build.gradle" }}-{{ checksum  "buildSrc/src/main/groovy/com/jcminarro/Dependencies.groovy" }}
 
 version: 2
 jobs:
@@ -26,13 +32,9 @@ jobs:
     steps:
       - checkout
       - run: *configure_gradle
-      - restore_cache:
-          key: jars--{{ checksum "build.gradle" }}-{{ checksum  "philology/build.gradle" }}-{{ checksum  "sample/build.gradle" }}
+      - restore_cache: *restore_cache
       - run: *download_gradle_dependencies
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: jars--{{ checksum "build.gradle" }}-{{ checksum  "philology/build.gradle" }}-{{ checksum  "sample/build.gradle" }}
+      - save_cache: *save_cache
       - run:
           name: Build Philology lib
           command: ./gradlew philology:assemble --stacktrace -PdisablePreDex
@@ -51,13 +53,9 @@ jobs:
     steps:
       - checkout
       - run: *configure_gradle
-      - restore_cache:
-          key: jars--{{ checksum "build.gradle" }}-{{ checksum  "philology/build.gradle" }}-{{ checksum  "sample/build.gradle" }}
+      - restore_cache: *restore_cache
       - run: *download_gradle_dependencies
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: jars--{{ checksum "build.gradle" }}-{{ checksum  "philology/build.gradle" }}-{{ checksum  "sample/build.gradle" }}
+      - save_cache: *save_cache
       - attach_workspace:
           at: .
       - run:
@@ -74,13 +72,9 @@ jobs:
     steps:
       - checkout
       - run: *configure_gradle
-      - restore_cache:
-          key: jars--{{ checksum "build.gradle" }}-{{ checksum  "philology/build.gradle" }}-{{ checksum  "sample/build.gradle" }}
+      - restore_cache: *restore_cache
       - run: *download_gradle_dependencies
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: jars--{{ checksum "build.gradle" }}-{{ checksum  "philology/build.gradle" }}-{{ checksum  "sample/build.gradle" }}
+      - save_cache: *save_cache
       - attach_workspace:
           at: .
       - run:
@@ -95,13 +89,9 @@ jobs:
     steps:
       - checkout
       - run: *configure_gradle
-      - restore_cache:
-          key: jars--{{ checksum "build.gradle" }}-{{ checksum  "philology/build.gradle" }}-{{ checksum  "sample/build.gradle" }}
+      - restore_cache: *restore_cache
       - run: *download_gradle_dependencies
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: jars--{{ checksum "build.gradle" }}-{{ checksum  "philology/build.gradle" }}-{{ checksum  "sample/build.gradle" }}
+      - save_cache: *save_cache
       - attach_workspace:
           at: .
       - run:
@@ -116,13 +106,9 @@ jobs:
     steps:
       - checkout
       - run: *configure_gradle
-      - restore_cache:
-          key: jars--{{ checksum "build.gradle" }}-{{ checksum  "philology/build.gradle" }}-{{ checksum  "sample/build.gradle" }}
+      - restore_cache: *restore_cache
       - run: *download_gradle_dependencies
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: jars--{{ checksum "build.gradle" }}-{{ checksum  "philology/build.gradle" }}-{{ checksum  "sample/build.gradle" }}
+      - save_cache: *save_cache
       - attach_workspace:
           at: .
       - run:
