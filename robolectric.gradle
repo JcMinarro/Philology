@@ -1,11 +1,14 @@
 import com.jcminarro.AndroidSdk
 
+def allSdkConfigurations = []
+
 task prefetchSdks() {
     AndroidSdk.ALL_SDKS.each { androidSdk ->
         def config = configurations.create("sdk${androidSdk.apiLevel}")
         dependencies.add("sdk${androidSdk.apiLevel}", androidSdk.coordinates)
         // causes dependencies to be resolved:
         config.files
+        allSdkConfigurations << config.files.first()
     }
 }
 
@@ -21,5 +24,25 @@ task prefetchDependencies() {
                 }
             }
         }
+    }
+}
+
+task copyRobolectricSdk() {
+    dependsOn prefetchDependencies
+    doLast {
+        def robolectricSdkFolder = new File("$buildDir/robolectricSdk")
+        robolectricSdkFolder.mkdirs()
+        allSdkConfigurations.forEach { filePath ->
+            copy {
+                from filePath
+                into "$buildDir/robolectricSdk"
+            }
+        }
+    }
+}
+
+subprojects.forEach{
+    it.getTasksByName("test", true).forEach{
+        it.dependsOn copyRobolectricSdk
     }
 }
