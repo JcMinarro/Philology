@@ -5,7 +5,7 @@ class Config {
     static final int targetSdkVersion = 27
     static final int minSdkVersion = 16
     static final int versionCode = 1
-    static final String versionName = "1.0.1"
+    static final String versionName = "1.0.2"
     static final String group = "com.jcminarro"
     static final String pomArtifactId = "Philology"
     static final String pomName = "Philology"
