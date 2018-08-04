@@ -10,12 +10,16 @@ import org.amshove.kluent.`should be instance of`
 import org.amshove.kluent.`should be`
 import org.amshove.kluent.mock
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment.application
 
+@RunWith(RobolectricTestRunner::class)
 class PhilologyTest {
 
     @Test
     fun `Should return a PhilologyContextWrapper`() {
-        Philology.wrap(mock()) `should be instance of` PhilologyContextWrapper::class
+        Philology.wrap(application) `should be instance of` PhilologyContextWrapper::class
     }
 
     @Test
