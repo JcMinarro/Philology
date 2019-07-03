@@ -43,6 +43,7 @@ dependencies {
     implementation Dependencies.kotlinSTDLib
     implementation Dependencies.appCompat
     implementation Dependencies.viewPump
+    implementation Dependencies.icu4j
 
     testImplementation Dependencies.robolectric
     testImplementation Dependencies.jUnit
