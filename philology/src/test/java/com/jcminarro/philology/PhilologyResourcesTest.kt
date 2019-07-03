@@ -30,7 +30,7 @@ class PhilologyResourcesTest {
 
     @Test(expected = Resources.NotFoundException::class)
     fun `Should throw an exception if the given id doesn't exit asking for a text`() {
-        configureResourceGetTextException(baseResources, id)
+        configureResourceGetIdException(baseResources, id)
         resources.getText(id)
     }
 
@@ -42,7 +42,7 @@ class PhilologyResourcesTest {
 
     @Test(expected = Resources.NotFoundException::class)
     fun `Should throw an exception if the given id doesn't exit asking for an String`() {
-        configureResourceGetTextException(baseResources, id)
+        configureResourceGetIdException(baseResources, id)
         resources.getString(id)
     }
 
@@ -55,14 +55,14 @@ class PhilologyResourcesTest {
     @Test()
     fun `Should return a CharSecuence from repository asking for a text`() {
         configureResourceGetText(baseResources, id, nameId, someCharSequence)
-        configurePhilology(createRepository(nameId, repoCharSequence))
+        configurePhilology(createRepository(nameId, null, repoCharSequence))
         resources.getText(id) `should equal` repoCharSequence
     }
 
     @Test()
     fun `Should return a CharSecuence from repository asking for an String`() {
         configureResourceGetText(baseResources, id, nameId, someCharSequence)
-        configurePhilology(createRepository(nameId, repoCharSequence))
+        configurePhilology(createRepository(nameId, null, repoCharSequence))
         resources.getString(id) `should equal` repoString
     }
 }

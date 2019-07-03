@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">Philology Sample</string>
-    <string name="label">It is the default value that we have into our strings resoureces file</string>
+    <string name="label">It is the default value that we have into our strings resource file</string>
+    <plurals name="plurals_sample">
+        <item quantity="one">One test</item>
+        <item quantity="other">Other test</item>
+    </plurals>
+    <plurals name="plurals_sample_format">
+        <item quantity="one">One test %s</item>
+        <item quantity="other">Other test %s</item>
+    </plurals>
 </resources>
