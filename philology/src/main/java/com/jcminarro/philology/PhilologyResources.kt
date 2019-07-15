@@ -9,13 +9,10 @@ internal class PhilologyResources(baseResources: Resources)
 
     override fun getText(id: Int): CharSequence = resourcesUtil.getText(id)
     override fun getString(id: Int): String = resourcesUtil.getString(id)
-    override fun getQuantityText(id: Int, quantity: Int): CharSequence {
-        return resourcesUtil.getQuantityText(id, quantity)
-    }
-    override fun getQuantityString(id: Int, quantity: Int): String {
-        return resourcesUtil.getQuantityString(id, quantity)
-    }
-    override fun getQuantityString(id: Int, quantity: Int, vararg formatArgs: Any?): String {
-        return resourcesUtil.getQuantityString(id, quantity, *formatArgs)
-    }
+    override fun getQuantityText(id: Int, quantity: Int): CharSequence =
+        resourcesUtil.getQuantityText(id, quantity)
+    override fun getQuantityString(id: Int, quantity: Int): String =
+        resourcesUtil.getQuantityString(id, quantity)
+    override fun getQuantityString(id: Int, quantity: Int, vararg formatArgs: Any?): String =
+        resourcesUtil.getQuantityString(id, quantity, *formatArgs)
 }
