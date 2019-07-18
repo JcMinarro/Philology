@@ -53,7 +53,7 @@ class App : Application() {
 }
 
 object MyPhilologyRepositoryFactory : PhilologyRepositoryFactory {
-    override fun getPhilologyRepository(locale: Locale): PhilologyRepository? = when{
+    override fun getPhilologyRepository(locale: Locale): PhilologyRepository? = when {
         Locale.ENGLISH.language  == locale.language -> EnglishPhilologyRepository
         Locale("es", "ES").language == locale.language -> SpanishPhilologyRepository
 // If we don't support a language we could return null as PhilologyRepository and
@@ -63,8 +63,16 @@ object MyPhilologyRepositoryFactory : PhilologyRepositoryFactory {
 }
 
 object EnglishPhilologyRepository : PhilologyRepository {
-    override fun getText(key: String): CharSequence? = when (key) {
-        "label" -> "New value for the `label` key, it could be fetched from a database or an external API server"
+    override fun getText(resource: Resource): CharSequence? = when (resource) {
+        is Text -> when (resource.key) {
+            "label" -> "New value for the `label` key, it could be fetched from a database or an external API server"
+            else -> null
+        }
+        is Plural -> when ("${resource.key}_${resource.quantityKeyword}") {
+            "plurals_label_one" -> "New value for the `plurals_label` key and `one` quantity keyword"
+            "plurals_label_other" -> "New value for the `plurals_label` key and `other` quantity keyword"
+            else -> null
+        }
 // If we don't want reword an strings we could return null and the value from the string resources file will be used
         else -> null
     }
@@ -99,7 +107,7 @@ public class MyPhilologyRepositoryFactory extends PhilologyRepositoryFactory {
 public class EnglishPhilologyRepository extends PhilologyRepository {
     @Nullable
     @Override
-    public CharSequence getText(@NotNull String key) { /* Implementation */}
+    public CharSequence getText(@NotNull Resource resource) { /* Implementation */}
 }
 ```
 

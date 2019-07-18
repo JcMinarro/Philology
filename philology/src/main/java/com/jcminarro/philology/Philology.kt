@@ -48,7 +48,7 @@ interface ViewTransformerFactory {
 }
 
 private val emptyPhilologyRepository = object : PhilologyRepository{
-    override fun getText(key: String): CharSequence? = null
+    override fun getText(resource: Resource): CharSequence? = null
 }
 
 private val emptyViewTransformerFactory = object : ViewTransformerFactory {

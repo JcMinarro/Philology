@@ -29,40 +29,40 @@ class PhilologyResourcesTest {
     }
 
     @Test(expected = Resources.NotFoundException::class)
-    fun `Should throw an exception if the given id doesn't exit asking for a text`() {
-        configureResourceGetTextException(baseResources, id)
+    fun `Should throw an exception if the given id doesn't exist asking for a text`() {
+        configureResourceGetIdException(baseResources, id)
         resources.getText(id)
     }
 
     @Test()
-    fun `Should return a CharSecuence asking for a text`() {
+    fun `Should return a CharSequence asking for a text`() {
         configureResourceGetText(baseResources, id, nameId, someCharSequence)
         resources.getText(id) `should equal` someCharSequence
     }
 
     @Test(expected = Resources.NotFoundException::class)
-    fun `Should throw an exception if the given id doesn't exit asking for an String`() {
-        configureResourceGetTextException(baseResources, id)
+    fun `Should throw an exception if the given id doesn't exist asking for an String`() {
+        configureResourceGetIdException(baseResources, id)
         resources.getString(id)
     }
 
     @Test()
-    fun `Should return a CharSecuence asking for an String`() {
+    fun `Should return a CharSequence asking for an String`() {
         configureResourceGetText(baseResources, id, nameId, someCharSequence)
         resources.getString(id) `should equal` someString
     }
 
     @Test()
-    fun `Should return a CharSecuence from repository asking for a text`() {
+    fun `Should return a CharSequence from repository asking for a text`() {
         configureResourceGetText(baseResources, id, nameId, someCharSequence)
-        configurePhilology(createRepository(nameId, repoCharSequence))
+        configurePhilology(createRepository(nameId, null, repoCharSequence))
         resources.getText(id) `should equal` repoCharSequence
     }
 
     @Test()
-    fun `Should return a CharSecuence from repository asking for an String`() {
+    fun `Should return a CharSequence from repository asking for an String`() {
         configureResourceGetText(baseResources, id, nameId, someCharSequence)
-        configurePhilology(createRepository(nameId, repoCharSequence))
+        configurePhilology(createRepository(nameId, null, repoCharSequence))
         resources.getString(id) `should equal` repoString
     }
 }
