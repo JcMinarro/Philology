@@ -21,6 +21,18 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
+    <EditText
+        android:id="@+id/plural_quantity_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Plural quantity edit"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/default_label"
+        />
+
     <TextView
         android:id="@+id/plural_label"
         android:layout_width="wrap_content"
@@ -29,7 +41,19 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/default_label"
+        app:layout_constraintTop_toBottomOf="@id/plural_quantity_edit"
+        />
+
+    <EditText
+        android:id="@+id/plural_quantity_format_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Plural quantity format edit"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/plural_label"
         />
 
     <TextView
@@ -40,7 +64,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/plural_label"
+        app:layout_constraintTop_toBottomOf="@id/plural_quantity_format_edit"
         />
 
 </android.support.constraint.ConstraintLayout>
