@@ -32,6 +32,13 @@ fun configureResourceGetText(
     When calling resources.getText(id) doReturn text
 }
 
+fun configureResourceQuantityString(resources: Resources, quantity: Int, quantityString: String) {
+    When calling resources.getQuantityString(
+        R.plurals.com_jcminarro_philology_quantity_string,
+        quantity
+    ) doReturn quantityString
+}
+
 fun configureResourceGetIdException(resources: Resources, id: Int) {
     When calling resources.getResourceEntryName(id) doThrow Resources.NotFoundException()
 }

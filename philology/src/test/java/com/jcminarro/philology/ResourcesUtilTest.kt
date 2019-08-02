@@ -77,6 +77,7 @@ class ResourcesUtilTest {
 
     @Test
     fun `Should return a CharSequence asking for a quantity text`() {
+        configureResourceQuantityString(baseResources, quantity, "one")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         resources.getQuantityText(id, quantity) `should equal` someCharSequence
     }
@@ -89,6 +90,7 @@ class ResourcesUtilTest {
 
     @Test
     fun `Should return a CharSequence asking for an quantity String`() {
+        configureResourceQuantityString(baseResources, quantity, "one")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         resources.getQuantityString(id, quantity) `should equal` someString
     }
@@ -101,6 +103,7 @@ class ResourcesUtilTest {
 
     @Test
     fun `Should return a CharSequence asking for an formatted quantity String`() {
+        configureResourceQuantityString(baseResources, quantity, "one")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, "$someCharSequence%s")
         resources.getQuantityString(id, quantity, formatArg) `should equal` someString + formatArg
     }
@@ -111,6 +114,7 @@ class ResourcesUtilTest {
         val locale = Locale("ar", "ME")
         configuration = createConfiguration(locale)
         setup()
+        configureResourceQuantityString(baseResources, quantity, "zero")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "zero", repoCharSequence), locale)
         resources.getQuantityText(id, quantity) `should equal` repoCharSequence
@@ -122,6 +126,7 @@ class ResourcesUtilTest {
         val locale = Locale("ar", "ME")
         configuration = createConfiguration(locale)
         setup()
+        configureResourceQuantityString(baseResources, quantity, "zero")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "zero", repoCharSequence), locale)
         resources.getQuantityText(id, quantity) `should equal` repoString
@@ -130,6 +135,7 @@ class ResourcesUtilTest {
     @Test
     fun `Should return a CharSequence for one keyword asking for a quantity text`() {
         quantity = 1
+        configureResourceQuantityString(baseResources, quantity, "one")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "one", repoCharSequence))
         resources.getQuantityText(id, quantity) `should equal` repoCharSequence
@@ -138,6 +144,7 @@ class ResourcesUtilTest {
     @Test
     fun `Should return a CharSequence for one keyword asking for an quantity String`() {
         quantity = 1
+        configureResourceQuantityString(baseResources, quantity, "one")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "one", repoCharSequence))
         resources.getQuantityText(id, quantity) `should equal` repoString
@@ -149,6 +156,7 @@ class ResourcesUtilTest {
         val locale = Locale("ar", "ME")
         configuration = createConfiguration(locale)
         setup()
+        configureResourceQuantityString(baseResources, quantity, "two")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "two", repoCharSequence), locale)
         resources.getQuantityText(id, quantity) `should equal` repoCharSequence
@@ -160,6 +168,7 @@ class ResourcesUtilTest {
         val locale = Locale("ar", "ME")
         configuration = createConfiguration(locale)
         setup()
+        configureResourceQuantityString(baseResources, quantity, "two")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "two", repoCharSequence), locale)
         resources.getQuantityText(id, quantity) `should equal` repoString
@@ -171,6 +180,7 @@ class ResourcesUtilTest {
         val locale = Locale("ru", "RU")
         configuration = createConfiguration(locale)
         setup()
+        configureResourceQuantityString(baseResources, quantity, "few")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "few", repoCharSequence), locale)
         resources.getQuantityText(id, quantity) `should equal` repoCharSequence
@@ -182,6 +192,7 @@ class ResourcesUtilTest {
         val locale = Locale("ru", "RU")
         configuration = createConfiguration(locale)
         setup()
+        configureResourceQuantityString(baseResources, quantity, "few")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "few", repoCharSequence), locale)
         resources.getQuantityText(id, quantity) `should equal` repoString
@@ -193,6 +204,7 @@ class ResourcesUtilTest {
         val locale = Locale("ru", "RU")
         configuration = createConfiguration(locale)
         setup()
+        configureResourceQuantityString(baseResources, quantity, "many")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "many", repoCharSequence), locale)
         resources.getQuantityText(id, quantity) `should equal` repoCharSequence
@@ -204,6 +216,7 @@ class ResourcesUtilTest {
         val locale = Locale("ru", "RU")
         configuration = createConfiguration(locale)
         setup()
+        configureResourceQuantityString(baseResources, quantity, "many")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "many", repoCharSequence), locale)
         resources.getQuantityText(id, quantity) `should equal` repoString
@@ -212,6 +225,7 @@ class ResourcesUtilTest {
     @Test
     fun `Should return a CharSequence for other keyword asking for a quantity text`() {
         quantity = 2
+        configureResourceQuantityString(baseResources, quantity, "other")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "other", repoCharSequence))
         resources.getQuantityText(id, quantity) `should equal` repoCharSequence
@@ -220,6 +234,7 @@ class ResourcesUtilTest {
     @Test
     fun `Should return a CharSequence for other keyword asking for an quantity String`() {
         quantity = 2
+        configureResourceQuantityString(baseResources, quantity, "other")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "other", repoCharSequence))
         resources.getQuantityText(id, quantity) `should equal` repoString
