@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.LocaleList
 import android.util.AttributeSet
-import com.ibm.icu.impl.number.DecimalQuantity
 import com.jcminarro.philology.Resource.Plural
 import com.jcminarro.philology.Resource.Text
 import com.nhaarman.mockito_kotlin.doAnswer

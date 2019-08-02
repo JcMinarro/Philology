@@ -1,8 +1,8 @@
 package com.jcminarro.philology
 
 import android.content.res.Resources
+import android.icu.text.PluralRules
 import android.os.Build
-import com.ibm.icu.text.PluralRules
 import java.util.Locale
 
 internal class ResourcesUtil(private val baseResources: Resources) {
@@ -23,7 +23,7 @@ internal class ResourcesUtil(private val baseResources: Resources) {
     fun getQuantityText(id: Int, quantity: Int): CharSequence = repository.getText(
         Resource.Plural(
             baseResources.getResourceEntryName(id),
-            quantity.toPluralKeyword(baseResources.currentLocale())
+            quantity.toPluralKeyword(baseResources)
         )
     ) ?: baseResources.getQuantityText(id, quantity)
 
@@ -52,6 +52,8 @@ private fun Resources.currentLocale(): Locale = if (Build.VERSION.SDK_INT <= Bui
     configuration.locales[0]
 }
 
-private fun Int.toPluralKeyword(locale: Locale): String {
-    return PluralRules.forLocale(locale).select(this.toDouble())
+private fun Int.toPluralKeyword(baseResources: Resources): String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+    PluralRules.forLocale(baseResources.currentLocale()).select(this.toDouble())
+} else {
+    baseResources.getQuantityString(R.plurals.com_jcminarro_philology_quantity_string, this)
 }
