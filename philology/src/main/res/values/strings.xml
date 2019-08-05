@@ -7,4 +7,5 @@
         <item quantity="two">two</item>
         <item quantity="zero">zero</item>
     </plurals>
+    <public/>
 </resources>
