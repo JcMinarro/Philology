@@ -75,7 +75,7 @@ object RussianPhilologyRepository : PhilologyRepository {
     private val pluralsSample = mapOf(
         "one" to "один тест",
         "other" to "другие тесты",
-        "few" to "несколько теста",
+        "few" to "несколько тестов",
         "many" to "много тестов"
     )
     private val pluralsSampleFormat = mapOf(
