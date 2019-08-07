@@ -12,7 +12,7 @@ class Dependencies {
     private static String MOKITO_VERSION = '2.18.0'
     private static String KLUENT_VERSION = '1.28'
     private static String MOKITO_KOTLIN_VERSION = '1.5.0'
-    private static String VIEW_PUMP_VERSION = '1.0.0'
+    private static String VIEW_PUMP_VERSION = '2.0.3'
 
     static final String kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"
     static final String androidBuildToolGradlePlugin = "com.android.tools.build:gradle:$ANDROID_BUILD_TOOL_VERSION"
