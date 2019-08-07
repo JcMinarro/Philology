@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.res.Resources
-import android.support.v7.widget.VectorEnabledTintResources
+import androidx.appcompat.widget.VectorEnabledTintResources
 
 @SuppressWarnings("RestrictedApi")
 @SuppressLint("RestrictedApi")

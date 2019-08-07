@@ -1,6 +1,6 @@
 package com.jcminarro.philology.transformer
 
-import android.support.v7.widget.Toolbar
+import androidx.appcompat.widget.Toolbar
 import android.view.View
 import com.jcminarro.philology.HardcodedAttribute
 import com.jcminarro.philology.ResourceIdAttribute
