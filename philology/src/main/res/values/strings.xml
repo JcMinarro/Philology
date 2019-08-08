@@ -1,0 +1,11 @@
+<resources>
+    <plurals name="com_jcminarro_philology_quantity_string" translatable="false">
+        <item quantity="zero">zero</item>
+        <item quantity="one">one</item>
+        <item quantity="two">two</item>
+        <item quantity="few">few</item>
+        <item quantity="many">many</item>
+        <item quantity="other">other</item>
+    </plurals>
+    <public/>
+</resources>

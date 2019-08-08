@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.LocaleList
 import android.util.AttributeSet
-import com.ibm.icu.impl.number.DecimalQuantity
 import com.jcminarro.philology.Resource.Plural
 import com.jcminarro.philology.Resource.Text
 import com.nhaarman.mockito_kotlin.doAnswer
@@ -31,6 +30,13 @@ fun configureResourceGetText(
 ) {
     When calling resources.getResourceEntryName(id) doReturn nameId
     When calling resources.getText(id) doReturn text
+}
+
+fun configureResourceQuantityString(resources: Resources, quantity: Int, quantityString: String) {
+    When calling resources.getQuantityString(
+        R.plurals.com_jcminarro_philology_quantity_string,
+        quantity
+    ) doReturn quantityString
 }
 
 fun configureResourceGetIdException(resources: Resources, id: Int) {

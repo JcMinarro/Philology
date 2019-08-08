@@ -3,10 +3,10 @@
     <string name="label">It is the default value that we have into our strings resource file</string>
     <plurals name="plurals_sample">
         <item quantity="one">One test</item>
-        <item quantity="other">Other test</item>
+        <item quantity="other">Other tests</item>
     </plurals>
     <plurals name="plurals_sample_format">
-        <item quantity="one">One test %s</item>
-        <item quantity="other">Other test %s</item>
+        <item quantity="one">%d test</item>
+        <item quantity="other">%d tests</item>
     </plurals>
 </resources>
