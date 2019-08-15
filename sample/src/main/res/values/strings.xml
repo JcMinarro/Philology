@@ -9,4 +9,13 @@
         <item quantity="one">%d test</item>
         <item quantity="other">%d tests</item>
     </plurals>
+    <string-array name="days">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Saturday</item>
+    </string-array>
 </resources>

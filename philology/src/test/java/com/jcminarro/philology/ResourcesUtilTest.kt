@@ -239,4 +239,46 @@ class ResourcesUtilTest {
         configurePhilology(createRepository(nameId, "other", repoCharSequence))
         resources.getQuantityText(id, quantity) `should equal` repoString
     }
+
+    @Test(expected = Resources.NotFoundException::class)
+    fun `Should throw an exception if the given id doesn't exist asking for text array`() {
+        configureResourceGetIdException(baseResources, id)
+        resources.getTextArray(id)
+    }
+
+    @Test
+    fun `Should return an array of strings asking for a text array`() {
+        val textArray: Array<CharSequence> = arrayOf("first", "second")
+        configureResourceGetTextArray(baseResources, id, nameId, textArray)
+        resources.getTextArray(id) `should equal` textArray
+    }
+
+    @Test(expected = Resources.NotFoundException::class)
+    fun `Should throw an exception if the given id doesn't exist asking for a string array`() {
+        configureResourceGetIdException(baseResources, id)
+        resources.getStringArray(id)
+    }
+
+    @Test
+    fun `Should return an array of strings asking for a string array`() {
+        val textArray: Array<CharSequence> = arrayOf("first", "second")
+        configureResourceGetTextArray(baseResources, id, nameId, textArray)
+        resources.getStringArray(id) `should equal` textArray.map { it.toString() }.toTypedArray()
+    }
+
+    @Test
+    fun `Should return an array of strings from repository asking for a text array`() {
+        val textArray: Array<CharSequence> = arrayOf("first", "second")
+        configureResourceGetTextArray(baseResources, id, nameId, textArray)
+        configurePhilology(createRepository(nameId, textArray = textArray))
+        resources.getTextArray(id) `should equal` textArray
+    }
+
+    @Test
+    fun `Should return an array of strings from repository asking for a string array`() {
+        val textArray: Array<CharSequence> = arrayOf("first", "second")
+        configureResourceGetTextArray(baseResources, id, nameId, textArray)
+        configurePhilology(createRepository(nameId, textArray = textArray))
+        resources.getStringArray(id) `should equal` textArray.map { it.toString() }.toTypedArray()
+    }
 }

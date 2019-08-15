@@ -52,6 +52,58 @@ class PhilologyResourcesTest {
         resources.getString(id) `should equal` someString
     }
 
+    @Test(expected = Resources.NotFoundException::class)
+    fun `Should throw an exception if the given id doesn't exist asking for a quantity text`() {
+        configureResourceGetIdException(baseResources, id)
+        resources.getQuantityText(id, 1)
+    }
+
+    @Test
+    fun `Should return a CharSequence asking for a quantity text`() {
+        configureResourceQuantityString(baseResources, 1, "one")
+        configureResourceGetQuantityText(baseResources, id, nameId, 1, someCharSequence)
+        resources.getQuantityText(id, 1) `should equal` someCharSequence
+    }
+
+    @Test(expected = Resources.NotFoundException::class)
+    fun `Should throw an exception if the given id doesn't exist asking for an quantity string`() {
+        configureResourceGetIdException(baseResources, id)
+        resources.getQuantityString(id, 1)
+    }
+
+    @Test
+    fun `Should return a CharSequence asking for an quantity string`() {
+        configureResourceQuantityString(baseResources, 1, "one")
+        configureResourceGetQuantityText(baseResources, id, nameId, 1, someCharSequence)
+        resources.getQuantityString(id, 1) `should equal` someString
+    }
+
+    @Test(expected = Resources.NotFoundException::class)
+    fun `Should throw an exception if the given id doesn't exist asking for a string array`() {
+        configureResourceGetIdException(baseResources, id)
+        resources.getStringArray(id)
+    }
+
+    @Test
+    fun `Should return a CharSequence asking for a string array`() {
+        val textArray = arrayOf<CharSequence>("first", "second")
+        configureResourceGetTextArray(baseResources, id, nameId, textArray)
+        resources.getStringArray(id) `should equal` textArray.map { it.toString() }.toTypedArray()
+    }
+
+    @Test(expected = Resources.NotFoundException::class)
+    fun `Should throw an exception if the given id doesn't exist asking for a text array`() {
+        configureResourceGetIdException(baseResources, id)
+        resources.getStringArray(id)
+    }
+
+    @Test
+    fun `Should return a CharSequence asking for a text array`() {
+        val textArray = arrayOf<CharSequence>("first", "second")
+        configureResourceGetTextArray(baseResources, id, nameId, textArray)
+        resources.getTextArray(id) `should equal` textArray
+    }
+
     @Test()
     fun `Should return a CharSequence from repository asking for a text`() {
         configureResourceGetText(baseResources, id, nameId, someCharSequence)
@@ -64,5 +116,37 @@ class PhilologyResourcesTest {
         configureResourceGetText(baseResources, id, nameId, someCharSequence)
         configurePhilology(createRepository(nameId, null, repoCharSequence))
         resources.getString(id) `should equal` repoString
+    }
+
+    @Test
+    fun `Should return a CharSequence from repository asking for a quantity text`() {
+        configureResourceQuantityString(baseResources, 1, "one")
+        configureResourceGetQuantityText(baseResources, id, nameId, 1, someCharSequence)
+        configurePhilology(createRepository(nameId, "one", repoCharSequence))
+        resources.getQuantityText(id, 1) `should equal` repoCharSequence
+    }
+
+    @Test
+    fun `Should return a CharSequence from repository asking for an quantity string`() {
+        configureResourceQuantityString(baseResources, 1, "one")
+        configureResourceGetQuantityText(baseResources, id, nameId, 1, someCharSequence)
+        configurePhilology(createRepository(nameId, "one", repoCharSequence))
+        resources.getQuantityString(id, 1) `should equal` repoString
+    }
+
+    @Test
+    fun `Should return a CharSequence from repository asking for a string array`() {
+        val textArray: Array<CharSequence> = arrayOf("first", "second")
+        configureResourceGetTextArray(baseResources, id, nameId, textArray)
+        configurePhilology(createRepository(nameId, textArray = textArray))
+        resources.getStringArray(id) `should equal` textArray.map { it.toString() }.toTypedArray()
+    }
+
+    @Test
+    fun `Should return a CharSequence from repository asking for a text array`() {
+        val textArray: Array<CharSequence> = arrayOf("first", "second")
+        configureResourceGetTextArray(baseResources, id, nameId, textArray)
+        configurePhilology(createRepository(nameId, textArray = textArray))
+        resources.getTextArray(id) `should equal` textArray
     }
 }
