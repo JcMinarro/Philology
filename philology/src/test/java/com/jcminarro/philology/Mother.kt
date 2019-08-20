@@ -4,8 +4,6 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.LocaleList
 import android.util.AttributeSet
-import com.jcminarro.philology.Resource.Plural
-import com.jcminarro.philology.Resource.Text
 import com.nhaarman.mockito_kotlin.doAnswer
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.doThrow
@@ -50,20 +48,33 @@ fun configureResourceGetQuantityText(
     When calling resources.getQuantityText(id, quantity) doReturn text
 }
 
+fun configureResourceGetTextArray(
+    resources: Resources, id: Int, nameId: String, textArray: Array<CharSequence>
+) {
+    When calling resources.getResourceEntryName(id) doReturn nameId
+    When calling resources.getTextArray(id) doReturn textArray
+}
+
 fun clearPhilology() {
     Philology.init(object : PhilologyRepositoryFactory {
         override fun getPhilologyRepository(locale: Locale): PhilologyRepository? = null
     })
 }
 
-fun createRepository(nameId: String, quantity: String?, text: CharSequence): PhilologyRepository =
+fun createRepository(
+    nameId: String,
+    quantity: String? = null,
+    text: CharSequence? = null,
+    textArray: Array<CharSequence>? = null
+): PhilologyRepository =
     object : PhilologyRepository {
-        override fun getText(resource: Resource): CharSequence? = when (resource) {
-            is Text -> text.takeIf { resource.key == nameId }
-            is Plural -> text.takeIf {
-                resource.key == nameId && resource.quantityKeyword == quantity
-            }
+        override fun getText(key: String) = text.takeIf { key == nameId }
+
+        override fun getPlural(key: String, quantityString: String): CharSequence? {
+            return text.takeIf { key == nameId && quantity == quantity }
         }
+
+        override fun getTextArray(key: String) = textArray.takeIf { key == nameId }
     }
 
 fun createFactory(vararg repositoryPairs: Pair<Locale, PhilologyRepository>): PhilologyRepositoryFactory =

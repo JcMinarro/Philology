@@ -5,9 +5,6 @@ import com.jcminarro.philology.Philology
 import com.jcminarro.philology.PhilologyInterceptor
 import com.jcminarro.philology.PhilologyRepository
 import com.jcminarro.philology.PhilologyRepositoryFactory
-import com.jcminarro.philology.Resource
-import com.jcminarro.philology.Resource.Plural
-import com.jcminarro.philology.Resource.Text
 import io.github.inflationx.viewpump.ViewPump
 import java.util.Locale
 
@@ -42,14 +39,13 @@ object EnglishPhilologyRepository : PhilologyRepository {
         "plurals_sample_format" to pluralsSampleFormat
     )
 
-    override fun getText(resource: Resource): CharSequence? = when (resource) {
-        is Text -> when (resource.key) {
-            "label" -> "New value for the `label` key, it could be fetched from a database or an external API server"
-            else -> null
-        }
-        is Plural -> resourceSample[resource.key]?.get(resource.quantityKeyword)
-// If we don't want reword an strings we could return null and the value from the string resources file will be used
+    override fun getText(key: String): CharSequence? = when (key) {
+        "label" -> "New value for the `label` key, it could be fetched from a database or an external API server"
         else -> null
+    }
+
+    override fun getPlural(key: String, quantityString: String): CharSequence? {
+        return resourceSample[key]?.get(quantityString)
     }
 }
 
@@ -61,12 +57,25 @@ object SpanishPhilologyRepository : PhilologyRepository {
         "plurals_sample_format" to pluralsSampleFormat
     )
 
-    override fun getText(resource: Resource): CharSequence? = when (resource) {
-        is Text -> when (resource.key) {
-            "label" -> "Nuevo valor para la clave `label`, puede ser obtenida de una base de datos o un servidor externo"
-            else -> null
-        }
-        is Plural -> resourceSample[resource.key]?.get(resource.quantityKeyword)
+    override fun getText(key: String): CharSequence? = when (key) {
+        "label" -> "Nuevo valor para la clave `label`, puede ser obtenida de una base de datos o un servidor externo"
+        else -> null
+    }
+
+    override fun getPlural(key: String, quantityString: String): CharSequence? {
+        return resourceSample[key]?.get(quantityString)
+    }
+
+    override fun getTextArray(key: String) = when (key) {
+        "days" -> arrayOf<CharSequence>(
+            "lunes",
+            "martes",
+            "miércoles",
+            "jueves",
+            "viernes",
+            "sábado",
+            "domingo"
+        )
         else -> null
     }
 }
@@ -89,12 +98,25 @@ object RussianPhilologyRepository : PhilologyRepository {
         "plurals_sample_format" to pluralsSampleFormat
     )
 
-    override fun getText(resource: Resource): CharSequence? = when (resource) {
-        is Text -> when (resource.key) {
-            "label" -> "Новое значение для ключа `label`, его можно получить из базы данных или внешнего сервера API"
-            else -> null
-        }
-        is Plural -> resourceSample[resource.key]?.get(resource.quantityKeyword)
+    override fun getText(key: String): CharSequence? = when (key) {
+        "label" -> "Новое значение для ключа `label`, его можно получить из базы данных или внешнего сервера API"
+        else -> null
+    }
+
+    override fun getPlural(key: String, quantityString: String): CharSequence? {
+        return resourceSample[key]?.get(quantityString)
+    }
+
+    override fun getTextArray(key: String) = when (key) {
+        "days" -> arrayOf<CharSequence>(
+            "понедельник",
+            "вторник",
+            "среда",
+            "четверг",
+            "пятница",
+            "суббота",
+            "воскресенье"
+        )
         else -> null
     }
 }

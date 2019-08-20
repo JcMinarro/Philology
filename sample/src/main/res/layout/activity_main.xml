@@ -67,4 +67,20 @@
         app:layout_constraintTop_toBottomOf="@id/plural_quantity_format_edit"
         />
 
+    <Spinner
+        android:id="@+id/days_spinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/plural_format_label"
+        android:entries="@array/days"
+        />
+
 </android.support.constraint.ConstraintLayout>

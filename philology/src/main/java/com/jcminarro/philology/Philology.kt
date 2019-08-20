@@ -14,7 +14,7 @@ import java.util.Locale
 
 object Philology {
     private val repositoryMap = mutableMapOf<Locale, PhilologyRepository>()
-    private var factory: PhilologyRepositoryFactory = object : PhilologyRepositoryFactory{
+    private var factory: PhilologyRepositoryFactory = object : PhilologyRepositoryFactory {
         override fun getPhilologyRepository(locale: Locale): PhilologyRepository? = null
     }
     private var viewTransformerFactory: ViewTransformerFactory = emptyViewTransformerFactory
@@ -47,15 +47,13 @@ interface ViewTransformerFactory {
     fun getViewTransformer(view: View): ViewTransformer?
 }
 
-private val emptyPhilologyRepository = object : PhilologyRepository{
-    override fun getText(resource: Resource): CharSequence? = null
-}
+private val emptyPhilologyRepository = object : PhilologyRepository {}
 
 private val emptyViewTransformerFactory = object : ViewTransformerFactory {
     override fun getViewTransformer(view: View): ViewTransformer? = null
 }
 
-private val internalViewTransformerFactory = object : ViewTransformerFactory{
+private val internalViewTransformerFactory = object : ViewTransformerFactory {
     override fun getViewTransformer(view: View): ViewTransformer =
             getNewApiViewTransformer(view) ?:
                     getSupportedViewTransformer(view) ?:

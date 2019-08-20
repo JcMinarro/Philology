@@ -12,7 +12,7 @@ internal class ResourcesUtil(private val baseResources: Resources) {
 
     @Throws(Resources.NotFoundException::class)
     fun getText(id: Int): CharSequence {
-        return repository.getText(Resource.Text(baseResources.getResourceEntryName(id)))
+        return repository.getText(baseResources.getResourceEntryName(id))
             ?: baseResources.getText(id)
     }
 
@@ -20,11 +20,9 @@ internal class ResourcesUtil(private val baseResources: Resources) {
     fun getString(id: Int): String = getText(id).toString()
 
     @Throws(Resources.NotFoundException::class)
-    fun getQuantityText(id: Int, quantity: Int): CharSequence = repository.getText(
-        Resource.Plural(
-            baseResources.getResourceEntryName(id),
-            quantity.toPluralKeyword(baseResources)
-        )
+    fun getQuantityText(id: Int, quantity: Int): CharSequence = repository.getPlural(
+        baseResources.getResourceEntryName(id),
+        quantity.toPluralKeyword(baseResources)
     ) ?: baseResources.getQuantityText(id, quantity)
 
     @Throws(Resources.NotFoundException::class)
@@ -33,15 +31,20 @@ internal class ResourcesUtil(private val baseResources: Resources) {
     @Throws(Resources.NotFoundException::class)
     fun getQuantityString(id: Int, quantity: Int, vararg formatArgs: Any?): String =
         String.format(getQuantityString(id, quantity), *formatArgs)
+
+    fun getStringArray(id: Int): Array<String> =
+        getTextArray(id).map { it.toString() }.toTypedArray()
+
+    fun getTextArray(id: Int): Array<CharSequence> {
+        return repository.getTextArray(baseResources.getResourceEntryName(id))
+            ?: baseResources.getTextArray(id)
+    }
 }
 
 interface PhilologyRepository {
-    fun getText(resource: Resource): CharSequence?
-}
-
-sealed class Resource(open val key: String) {
-    data class Text(override val key: String) : Resource(key)
-    data class Plural(override val key: String, val quantityKeyword: String) : Resource(key)
+    fun getText(key: String): CharSequence? = null
+    fun getPlural(key: String, quantityString: String): CharSequence? = null
+    fun getTextArray(key: String): Array<CharSequence>? = null
 }
 
 @SuppressWarnings("NewApi")
