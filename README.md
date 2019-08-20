@@ -63,17 +63,30 @@ object MyPhilologyRepositoryFactory : PhilologyRepositoryFactory {
 }
 
 object EnglishPhilologyRepository : PhilologyRepository {
-    override fun getText(resource: Resource): CharSequence? = when (resource) {
-        is Text -> when (resource.key) {
-            "label" -> "New value for the `label` key, it could be fetched from a database or an external API server"
-            else -> null
-        }
-        is Plural -> when ("${resource.key}_${resource.quantityKeyword}") {
-            "plurals_label_one" -> "New value for the `plurals_label` key and `one` quantity keyword"
-            "plurals_label_other" -> "New value for the `plurals_label` key and `other` quantity keyword"
-            else -> null
-        }
-// If we don't want reword an strings we could return null and the value from the string resources file will be used
+    override fun getText(key: String): CharSequence? = when (key) {
+        "label" -> "New value for the `label` key, it could be fetched from a database or an external API server"
+        // If we don't want reword a strings we could return null and the value from the string resources file will be used
+        else -> null
+    }
+
+    override fun getPlural(key: String, quantityString: String): CharSequence?  = when ("${key}_$quantityString") {
+        "plurals_label_one" -> "New value for the `plurals_label` key and `one` quantity keyword"
+        "plurals_label_other" -> "New value for the `plurals_label` key and `other` quantity keyword"
+        // If we don't want reword a plural we could return null and the value from the string resources file will be used
+        else -> null
+    }
+
+   override fun getTextArray(key: String): Array<CharSequence>? = when (key) {
+        "days" -> arrayOf(
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Saturday"
+        )
+        // If we don't want reword a string array we could return null and the value from the string resources file will be used
         else -> null
     }
 }
