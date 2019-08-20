@@ -12,7 +12,6 @@ import org.amshove.kluent.When
 import org.amshove.kluent.calling
 import org.amshove.kluent.mock
 import org.mockito.Mockito
-import org.robolectric.res.Plural
 import java.util.Locale
 
 fun createConfiguration(locale: Locale = Locale.ENGLISH): Configuration = mock<Configuration>().apply {
