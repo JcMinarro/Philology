@@ -32,7 +32,8 @@ internal class ResourcesUtil(private val baseResources: Resources) {
     fun getQuantityString(id: Int, quantity: Int, vararg formatArgs: Any?): String =
         String.format(getQuantityString(id, quantity), *formatArgs)
 
-    fun getStringArray(id: Int) = getTextArray(id).map { it.toString() }.toTypedArray()
+    fun getStringArray(id: Int): Array<String> =
+        getTextArray(id).map { it.toString() }.toTypedArray()
 
     fun getTextArray(id: Int): Array<CharSequence> {
         return repository.getTextArray(baseResources.getResourceEntryName(id))
