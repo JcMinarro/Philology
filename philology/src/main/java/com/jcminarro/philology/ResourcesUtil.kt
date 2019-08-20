@@ -29,9 +29,8 @@ internal class ResourcesUtil(private val baseResources: Resources) {
     fun getQuantityString(id: Int, quantity: Int): String = getQuantityText(id, quantity).toString()
 
     @Throws(Resources.NotFoundException::class)
-    fun getQuantityString(id: Int, quantity: Int, vararg formatArgs: Any?): String {
-        return String.format(getQuantityString(id, quantity), *formatArgs)
-    }
+    fun getQuantityString(id: Int, quantity: Int, vararg formatArgs: Any?): String =
+        String.format(getQuantityString(id, quantity), *formatArgs)
 
     fun getStringArray(id: Int) = getTextArray(id).map { it.toString() }.toTypedArray()
 
