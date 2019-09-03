@@ -30,7 +30,7 @@ Philology use [ViewPump](https://github.com/InflationX/ViewPump) library to inte
 
 ```groovy
 dependencies {
-    compile 'com.jcminarro:Philology:1.1.2'
+    compile 'com.jcminarro:Philology:2.0.0'
     compile 'io.github.inflationx:viewpump:2.0.3'
 }
 ```
