@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - A `CHANGELOG.md` File to track every new change on the library by [Jc Miñarro](https://github.com/jcminarro)
+- Add String Array Support by [Maxim Bircu](https://github.com/mbircu-ellation)
 
 ## [1.1.1]
 _2019-08-08_ [Github Diff](https://github.com/jcminarro/Philology/compare/v-1.1.0...v-1.1.1)
