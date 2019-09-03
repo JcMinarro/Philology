@@ -9,7 +9,7 @@ object PhilologyInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): InflateResult =
             chain.proceed(chain.request()).let {inflateResult ->
                 inflateResult.toBuilder()
-                        .view(rewordView(inflateResult.view(), inflateResult.attrs()))
+                        .view(rewordView(inflateResult.view, inflateResult.attrs))
                         .build()
             }
 

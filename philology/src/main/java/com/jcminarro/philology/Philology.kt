@@ -3,7 +3,7 @@ package com.jcminarro.philology
 import android.content.Context
 import android.content.ContextWrapper
 import android.os.Build
-import android.support.v7.widget.Toolbar
+import androidx.appcompat.widget.Toolbar
 import android.view.View
 import android.widget.TextView
 import com.jcminarro.philology.transformer.NoneViewTransformer

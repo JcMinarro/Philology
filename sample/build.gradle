@@ -13,7 +13,7 @@ android {
         targetSdkVersion Config.targetSdkVersion
         versionCode Config.versionCode
         versionName Config.versionName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -30,7 +30,7 @@ dependencies {
     implementation Dependencies.appCompat
     implementation Dependencies.viewPump
 
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     testImplementation Dependencies.jUnit
     testImplementation Dependencies.mockito
     testImplementation Dependencies.mockitoKotlin

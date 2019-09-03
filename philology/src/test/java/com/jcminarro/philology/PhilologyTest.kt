@@ -11,7 +11,7 @@ import android.os.Build.VERSION_CODES.N
 import android.os.Build.VERSION_CODES.N_MR1
 import android.os.Build.VERSION_CODES.O
 import android.os.Build.VERSION_CODES.O_MR1
-import android.support.v7.widget.Toolbar
+import androidx.appcompat.widget.Toolbar
 import android.widget.TextView
 import com.jcminarro.philology.transformer.NoneViewTransformer
 import com.jcminarro.philology.transformer.SupportToolbarViewTransformer
