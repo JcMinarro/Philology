@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- AppCompact from AndroidX Project
+
+### Ghanged
+- Migrate to AndroidX
+- Upgrade ViewPump to version 2.0.3
+
+### Removed
+- AppCompact from the old Android Support library
 
 ## [1.1.2]
 _2019-09-03_ [Github Diff](https://github.com/jcminarro/Philology/compare/v-1.1.1...v-1.1.2)
