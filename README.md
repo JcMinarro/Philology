@@ -44,20 +44,20 @@ Kotlin:
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-// Init Philology with our PhilologyRepositoryFactory
+        // Init Philology with our PhilologyRepositoryFactory
         Philology.init(MyPhilologyRepositoryFactory)
-// Add PhilologyInterceptor to ViewPump
-// If you are already using Calligraphy you can add both interceptors, there is no problem
+        // Add PhilologyInterceptor to ViewPump
+        // If you are already using Calligraphy you can add both interceptors, there is no problem
         ViewPump.init(ViewPump.builder().addInterceptor(PhilologyInterceptor).build())
     }
 }
 
 object MyPhilologyRepositoryFactory : PhilologyRepositoryFactory {
-    override fun getPhilologyRepository(locale: Locale): PhilologyRepository? = when {
-        Locale.ENGLISH.language  == locale.language -> EnglishPhilologyRepository
-        Locale("es", "ES").language == locale.language -> SpanishPhilologyRepository
-// If we don't support a language we could return null as PhilologyRepository and
-// values from the strings resources file will be used
+    override fun getPhilologyRepository(locale: Locale): PhilologyRepository? = when (locale.language) {
+        Locale.ENGLISH.language -> EnglishPhilologyRepository
+        Locale("es", "ES").language -> SpanishPhilologyRepository
+        // If we don't support a language we could return null as PhilologyRepository and
+        // values from the strings resources file will be used
         else -> null
     }
 }
