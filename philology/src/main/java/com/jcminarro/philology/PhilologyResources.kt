@@ -9,6 +9,12 @@ internal class PhilologyResources(baseResources: Resources) :
 
     override fun getText(id: Int): CharSequence = resourcesUtil.getText(id)
 
+    override fun getText(id: Int, def: CharSequence): CharSequence = try {
+        getText(id)
+    } catch (_: NotFoundException) {
+        def
+    }
+
     override fun getString(id: Int): String = resourcesUtil.getString(id)
 
     override fun getQuantityText(id: Int, quantity: Int): CharSequence =

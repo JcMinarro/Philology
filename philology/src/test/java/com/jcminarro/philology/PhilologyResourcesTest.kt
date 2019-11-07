@@ -34,10 +34,24 @@ class PhilologyResourcesTest {
         resources.getText(id)
     }
 
-    @Test()
+    @Test
     fun `Should return a CharSequence asking for a text`() {
         configureResourceGetText(baseResources, id, nameId, someCharSequence)
         resources.getText(id) `should equal` someCharSequence
+    }
+
+    @Test
+    fun `Should return a defaultCharSequence asking for a text with a default value`() {
+        val defaultCharSequence: CharSequence = "default char sequence"
+        configureResourceGetIdException(baseResources, id)
+        resources.getText(id, defaultCharSequence) `should equal` defaultCharSequence
+    }
+
+    @Test
+    fun `Should return a CharSequence asking for a text with a default value`() {
+        val defaultCharSequence: CharSequence = "default char sequence"
+        configureResourceGetText(baseResources, id, nameId, someCharSequence)
+        resources.getText(id, defaultCharSequence) `should equal` someCharSequence
     }
 
     @Test(expected = Resources.NotFoundException::class)
@@ -46,7 +60,7 @@ class PhilologyResourcesTest {
         resources.getString(id)
     }
 
-    @Test()
+    @Test
     fun `Should return a CharSequence asking for an String`() {
         configureResourceGetText(baseResources, id, nameId, someCharSequence)
         resources.getString(id) `should equal` someString
