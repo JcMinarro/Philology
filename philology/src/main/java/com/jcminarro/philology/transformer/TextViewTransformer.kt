@@ -16,16 +16,16 @@ internal object TextViewTransformer : ViewTransformer {
     }
 
     private fun TextView.reword(attributeSet: AttributeSet) {
-        attributeSet.forEach {
-            when (attributeSet.getAttributeName(it)) {
-                TEXT -> setTextIfExists(attributeSet, it, this::setText)
-                HINT -> setTextIfExists(attributeSet, it, this::setHint)
+        attributeSet.forEach { index ->
+            when (attributeSet.getAttributeName(index)) {
+                TEXT -> setTextIfExists(attributeSet, index, this::setText)
+                HINT -> setTextIfExists(attributeSet, index, this::setHint)
                 STYLE -> setTextIfExistsInStyle(
-                    context,
-                    attributeSet,
-                    it,
-                    this::setText,
-                    this::setHint
+                    context = context,
+                    attributeSet = attributeSet,
+                    styleIndex = index,
+                    attributesFromStyle = intArrayOf(android.R.attr.text, android.R.attr.hint),
+                    setTextResActions = listOf(this::setText, this::setHint)
                 )
             }
         }

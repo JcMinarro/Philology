@@ -10,6 +10,7 @@ import com.jcminarro.philology.ViewTransformer
 internal object ToolbarViewTransformer : ViewTransformer {
     private const val TITLE = "title"
     private const val SUBTITLE = "subtitle"
+    private const val STYLE = "style"
     override fun reword(view: View, attributeSet: AttributeSet): View = view.apply {
         when (this) {
             is Toolbar -> reword(attributeSet)
@@ -17,10 +18,17 @@ internal object ToolbarViewTransformer : ViewTransformer {
     }
 
     private fun Toolbar.reword(attributeSet: AttributeSet) {
-        attributeSet.forEach {
-            when (attributeSet.getAttributeName(it)) {
-                TITLE -> setTextIfExists(attributeSet, it, this::setTitle)
-                SUBTITLE -> setTextIfExists(attributeSet, it, this::setSubtitle)
+        attributeSet.forEach { index ->
+            when (attributeSet.getAttributeName(index)) {
+                TITLE -> setTextIfExists(attributeSet, index, this::setTitle)
+                SUBTITLE -> setTextIfExists(attributeSet, index, this::setSubtitle)
+                STYLE -> setTextIfExistsInStyle(
+                    context = context,
+                    attributeSet = attributeSet,
+                    styleIndex = index,
+                    attributesFromStyle = intArrayOf(android.R.attr.title, android.R.attr.subtitle),
+                    setTextResActions = listOf(this::setTitle, this::setSubtitle)
+                )
             }
         }
     }

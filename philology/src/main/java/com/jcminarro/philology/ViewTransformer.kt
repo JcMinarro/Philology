@@ -15,20 +15,18 @@ interface ViewTransformer {
     fun setTextIfExistsInStyle(
         context: Context,
         attributeSet: AttributeSet,
-        index: Int,
-        setTextResAction: (Int) -> Unit,
-        setHintResAction: (Int) -> Unit
+        styleIndex: Int,
+        attributesFromStyle: IntArray,
+        setTextResActions: List<(Int) -> Unit>
     ) {
-        val attributes = intArrayOf(android.R.attr.text, android.R.attr.hint)
-        val styleResource = attributeSet.getAttributeResourceValue(index, -1).takeIf { it != -1 }
+        val styleResource =
+            attributeSet.getAttributeResourceValue(styleIndex, -1).takeIf { it != -1 }
         styleResource?.let {
-            val styleAttr = context.obtainStyledAttributes(styleResource, attributes)
-            val textResource = styleAttr.getResourceId(attributes.indexOf(android.R.attr.text), -1)
-                .takeIf { it != -1 }
-            textResource?.let(setTextResAction)
-            val hintResource = styleAttr.getResourceId(attributes.indexOf(android.R.attr.hint), -1)
-                .takeIf { it != -1 }
-            hintResource?.let(setHintResAction)
+            val styleAttr = context.obtainStyledAttributes(styleResource, attributesFromStyle)
+            attributesFromStyle.forEachIndexed { index, _ ->
+                val textResource = styleAttr.getResourceId(index, -1).takeIf { it != -1 }
+                textResource?.let(setTextResActions[index])
+            }
             styleAttr.recycle()
         }
     }
