@@ -16,17 +16,20 @@ interface ViewTransformer {
         context: Context,
         attributeSet: AttributeSet,
         index: Int,
-        setTextResAction: (Int) -> Unit
+        setTextResAction: (Int) -> Unit,
+        setHintResAction: (Int) -> Unit
     ) {
+        val attributes = intArrayOf(android.R.attr.text, android.R.attr.hint)
         val styleResource = attributeSet.getAttributeResourceValue(index, -1).takeIf { it != -1 }
         styleResource?.let {
-            val styleAttr = context.obtainStyledAttributes(
-                styleResource,
-                intArrayOf(android.R.attr.text)
-            )
-            val textResource = styleAttr.getResourceId(0, 0)
+            val styleAttr = context.obtainStyledAttributes(styleResource, attributes)
+            val textResource = styleAttr.getResourceId(attributes.indexOf(android.R.attr.text), -1)
+                .takeIf { it != -1 }
+            textResource?.let(setTextResAction)
+            val hintResource = styleAttr.getResourceId(attributes.indexOf(android.R.attr.hint), -1)
+                .takeIf { it != -1 }
+            hintResource?.let(setHintResAction)
             styleAttr.recycle()
-            setTextResAction(textResource)
         }
     }
 }

@@ -20,7 +20,13 @@ internal object TextViewTransformer : ViewTransformer {
             when (attributeSet.getAttributeName(it)) {
                 TEXT -> setTextIfExists(attributeSet, it, this::setText)
                 HINT -> setTextIfExists(attributeSet, it, this::setHint)
-                STYLE -> setTextIfExistsInStyle(context, attributeSet, it, this::setText)
+                STYLE -> setTextIfExistsInStyle(
+                    context,
+                    attributeSet,
+                    it,
+                    this::setText,
+                    this::setHint
+                )
             }
         }
     }
