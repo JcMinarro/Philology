@@ -8,4 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="LabelStyle">
+        <item name="android:text">@string/label</item>
+    </style>
 </resources>

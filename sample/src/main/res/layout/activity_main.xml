@@ -21,6 +21,19 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
+
+    <TextView
+        android:id="@+id/default_label_from_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center|center_vertical"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/default_label"
+        style="@style/LabelStyle"
+        />
+
     <EditText
         android:id="@+id/plural_quantity_edit"
         android:layout_width="wrap_content"
@@ -30,7 +43,7 @@
         android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/default_label"
+        app:layout_constraintTop_toBottomOf="@id/default_label_from_style"
         />
 
     <TextView

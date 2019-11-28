@@ -2,11 +2,11 @@ package com.jcminarro.philology.sample
 
 import android.content.Context
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.jcminarro.philology.Philology
 import com.jcminarro.sample.R
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
