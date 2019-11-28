@@ -59,6 +59,7 @@ object SpanishPhilologyRepository : PhilologyRepository {
 
     override fun getText(key: String): CharSequence? = when (key) {
         "label" -> "Nuevo valor para la clave `label`, puede ser obtenida de una base de datos o un servidor externo"
+        "toolbar_title" -> "Philology muestra"
         else -> null
     }
 
@@ -100,6 +101,7 @@ object RussianPhilologyRepository : PhilologyRepository {
 
     override fun getText(key: String): CharSequence? = when (key) {
         "label" -> "Новое значение для ключа `label`, его можно получить из базы данных или внешнего сервера API"
+        "toolbar_title" -> "Philology Пример"
         else -> null
     }
 
