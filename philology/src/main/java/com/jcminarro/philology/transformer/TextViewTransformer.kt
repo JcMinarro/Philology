@@ -8,6 +8,7 @@ import com.jcminarro.philology.ViewTransformer
 internal object TextViewTransformer : ViewTransformer {
     private const val TEXT = "text"
     private const val HINT = "hint"
+    private const val STYLE = "style"
     override fun reword(view: View, attributeSet: AttributeSet): View = view.apply {
         when (this) {
             is TextView -> reword(attributeSet)
@@ -19,6 +20,7 @@ internal object TextViewTransformer : ViewTransformer {
             when (attributeSet.getAttributeName(it)) {
                 TEXT -> setTextIfExists(attributeSet, it, this::setText)
                 HINT -> setTextIfExists(attributeSet, it, this::setHint)
+                STYLE -> setTextIfExistsInStyle(context, attributeSet, it, this::setText)
             }
         }
     }
