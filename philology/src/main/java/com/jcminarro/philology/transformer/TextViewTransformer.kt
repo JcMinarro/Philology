@@ -17,12 +17,12 @@ internal object TextViewTransformer : ViewTransformer {
 
     private fun TextView.reword(attributeSet: AttributeSet) {
         var titleIndex: Int? = null
-        var subtitleIndex: Int? = null
+        var hintIndex: Int? = null
         var styleIndex: Int? = null
         attributeSet.forEach { index ->
             when (attributeSet.getAttributeName(index)) {
                 TEXT -> titleIndex = index
-                HINT -> subtitleIndex = index
+                HINT -> hintIndex = index
                 STYLE -> styleIndex = index
             }
         }
@@ -36,7 +36,7 @@ internal object TextViewTransformer : ViewTransformer {
         )
         setTextIfExists(
             context,
-            subtitleIndex,
+            hintIndex,
             styleIndex,
             attributeSet,
             android.R.attr.hint,

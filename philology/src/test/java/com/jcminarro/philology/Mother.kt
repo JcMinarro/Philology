@@ -104,11 +104,7 @@ fun createAttributeSet(
                 When calling this.getAttributeResourceValue(eq(index), any()) doReturn index
             }
             is StyleAttribute -> {
-                val styleAttributes = createStyledAttributes(at.styleAttributes)
-                When calling context.obtainStyledAttributes(
-                    eq(index),
-                    any()
-                ) doReturn styleAttributes
+                prepareStyledAttributes(context, at, index)
                 When calling this.getAttributeResourceValue(eq(index), any()) doReturn index
             }
         }
@@ -117,10 +113,19 @@ fun createAttributeSet(
     When calling this.attributeCount doReturn attributeType.size
 }
 
-fun createStyledAttributes(styleAttributes: IntArray): TypedArray = mock<TypedArray>().apply {
-    styleAttributes.forEachIndexed { index, _ ->
-        When calling this.getResourceId(eq(index), any()) doReturn index
-    }
+fun prepareStyledAttributes(context: Context, style: StyleAttribute, index: Int) {
+    whenever(context.obtainStyledAttributes(any<Int>(), any()))
+        .doAnswer {
+            val isPresentInAttributes =
+                style.styleAttributes.contains(it.getArgument<IntArray>(1).first())
+            mock<TypedArray>().apply {
+                if (isPresentInAttributes) {
+                    When calling this.getResourceId(0, -1) doReturn index
+                } else {
+                    When calling this.getResourceId(0, -1) doReturn -1
+                }
+            }
+        }
 }
 
 sealed class AttributeType {
