@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import com.jcminarro.philology.HardcodedAttribute
-import com.jcminarro.philology.R
 import com.jcminarro.philology.ResourceIdAttribute
 import com.jcminarro.philology.StyleAttribute
 import com.jcminarro.philology.createAttributeSet
@@ -19,6 +18,7 @@ import org.amshove.kluent.mock
 import org.amshove.kluent.on
 import org.amshove.kluent.that
 import org.amshove.kluent.was
+import org.junit.Before
 import org.junit.Test
 
 class SupportToolbarViewTransformerTest {
@@ -26,6 +26,11 @@ class SupportToolbarViewTransformerTest {
     private val view: View = mock()
     private val toolbar: Toolbar = mock()
     private val context: Context = mock()
+
+    @Before
+    fun setUp() {
+        When calling toolbar.context doReturn context
+    }
 
     @Test
     fun `View should be the same`() {
@@ -46,46 +51,52 @@ class SupportToolbarViewTransformerTest {
 
     @Test
     fun `Should reword only the title`() {
-        val viewResult = SupportToolbarViewTransformer.reword(toolbar, createAttributeSet(
+        val viewResult = SupportToolbarViewTransformer.reword(
+            toolbar, createAttributeSet(
                 HardcodedAttribute("subtitle"),
-                ResourceIdAttribute("title")))
+                ResourceIdAttribute("title")
+            )
+        )
 
         viewResult `should be` toolbar
         Verify on toolbar that toolbar.setTitle(1) was called
-        `Verify no further interactions` on toolbar
     }
 
     @Test
     fun `Should reword only the subtitle`() {
-        val viewResult = SupportToolbarViewTransformer.reword(toolbar, createAttributeSet(
+        val viewResult = SupportToolbarViewTransformer.reword(
+            toolbar, createAttributeSet(
                 HardcodedAttribute("title"),
-                ResourceIdAttribute("subtitle")))
+                ResourceIdAttribute("subtitle")
+            )
+        )
 
         viewResult `should be` toolbar
         Verify on toolbar that toolbar.setSubtitle(1) was called
-        `Verify no further interactions` on toolbar
     }
 
     @Test
     fun `Should reword title and subtitle`() {
-        val viewResult = SupportToolbarViewTransformer.reword(toolbar, createAttributeSet(
+        val viewResult = SupportToolbarViewTransformer.reword(
+            toolbar, createAttributeSet(
                 ResourceIdAttribute("title"),
-                ResourceIdAttribute("subtitle")))
+                ResourceIdAttribute("subtitle")
+            )
+        )
 
         viewResult `should be` toolbar
         Verify on toolbar that toolbar.setTitle(0) was called
         Verify on toolbar that toolbar.setSubtitle(1) was called
-        `Verify no further interactions` on toolbar
     }
 
     @Test
     fun `Should reword only the title from style`() {
-        When calling toolbar.context doReturn context
-
-        val viewResult = SupportToolbarViewTransformer.reword(toolbar,createAttributeSet(
-            StyleAttribute(intArrayOf(R.attr.title)),
-            context = context
-        ))
+        val viewResult = SupportToolbarViewTransformer.reword(
+            toolbar, createAttributeSet(
+                StyleAttribute(intArrayOf(android.R.attr.title)),
+                context = context
+            )
+        )
 
         viewResult `should be` toolbar
         Verify on toolbar that toolbar.setTitle(0) was called
@@ -93,12 +104,12 @@ class SupportToolbarViewTransformerTest {
 
     @Test
     fun `Should reword only the subtitle from style`() {
-        When calling toolbar.context doReturn context
-
-        val viewResult = SupportToolbarViewTransformer.reword(toolbar,createAttributeSet(
-            StyleAttribute(intArrayOf(R.attr.subtitle)),
-            context = context
-        ))
+        val viewResult = SupportToolbarViewTransformer.reword(
+            toolbar, createAttributeSet(
+                StyleAttribute(intArrayOf(android.R.attr.subtitle)),
+                context = context
+            )
+        )
 
         viewResult `should be` toolbar
         Verify on toolbar that toolbar.setSubtitle(0) was called
@@ -106,12 +117,28 @@ class SupportToolbarViewTransformerTest {
 
     @Test
     fun `Should reword title and subtitle from style`() {
-        When calling toolbar.context doReturn context
+        val viewResult = SupportToolbarViewTransformer.reword(
+            toolbar, createAttributeSet(
+                StyleAttribute(intArrayOf(android.R.attr.title, android.R.attr.subtitle)),
+                context = context
+            )
+        )
 
-        val viewResult = SupportToolbarViewTransformer.reword(toolbar,createAttributeSet(
-            StyleAttribute(intArrayOf(R.attr.title, R.attr.subtitle)),
-            context = context
-        ))
+        viewResult `should be` toolbar
+        Verify on toolbar that toolbar.setTitle(0) was called
+        Verify on toolbar that toolbar.setSubtitle(0) was called
+    }
+
+    @Test
+    fun `Should reword title and subtitle from attributes ignoring style`() {
+        val viewResult = SupportToolbarViewTransformer.reword(
+            toolbar, createAttributeSet(
+                ResourceIdAttribute("title"),
+                ResourceIdAttribute("subtitle"),
+                StyleAttribute(intArrayOf(android.R.attr.title, android.R.attr.subtitle)),
+                context = context
+            )
+        )
 
         viewResult `should be` toolbar
         Verify on toolbar that toolbar.setTitle(0) was called

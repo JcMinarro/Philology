@@ -1,6 +1,5 @@
 package com.jcminarro.philology.transformer
 
-import android.R.attr
 import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.widget.Toolbar
@@ -32,7 +31,7 @@ internal object SupportToolbarViewTransformer : ViewTransformer {
             titleIndex,
             styleIndex,
             attributeSet,
-            attr.title,
+            android.R.attr.title,
             this::setTitle
         )
         setTextIfExists(
@@ -40,7 +39,7 @@ internal object SupportToolbarViewTransformer : ViewTransformer {
             subtitleIndex,
             styleIndex,
             attributeSet,
-            attr.subtitle,
+            android.R.attr.subtitle,
             this::setSubtitle
         )
     }
