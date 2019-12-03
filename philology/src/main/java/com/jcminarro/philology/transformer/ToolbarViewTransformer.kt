@@ -18,18 +18,31 @@ internal object ToolbarViewTransformer : ViewTransformer {
     }
 
     private fun Toolbar.reword(attributeSet: AttributeSet) {
+        var titleIndex: Int? = null
+        var subtitleIndex: Int? = null
+        var styleIndex: Int? = null
         attributeSet.forEach { index ->
             when (attributeSet.getAttributeName(index)) {
-                TITLE -> setTextIfExists(attributeSet, index, this::setTitle)
-                SUBTITLE -> setTextIfExists(attributeSet, index, this::setSubtitle)
-                STYLE -> setTextIfExistsInStyle(
-                    context = context,
-                    attributeSet = attributeSet,
-                    styleIndex = index,
-                    attributesFromStyle = intArrayOf(android.R.attr.title, android.R.attr.subtitle),
-                    setTextResActions = listOf(this::setTitle, this::setSubtitle)
-                )
+                TITLE -> titleIndex = index
+                SUBTITLE -> subtitleIndex = index
+                STYLE -> styleIndex = index
             }
         }
+        setTextIfExists(
+            context,
+            titleIndex,
+            styleIndex,
+            attributeSet,
+            android.R.attr.title,
+            this::setTitle
+        )
+        setTextIfExists(
+            context,
+            subtitleIndex,
+            styleIndex,
+            attributeSet,
+            android.R.attr.subtitle,
+            this::setSubtitle
+        )
     }
 }
