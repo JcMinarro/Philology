@@ -7,16 +7,21 @@ import android.view.View
 interface ViewTransformer {
     fun reword(view: View, attributeSet: AttributeSet): View
 
+    fun setTextIfExists(attributeSet: AttributeSet, index: Int, setTextResAction: (Int) -> Unit) {
+        attributeSet.getAttributeResourceValue(index, -1).takeIf { it != -1 }
+            ?.let { setTextResAction(it) }
+    }
+
     fun setTextIfExists(
         context: Context,
-        index: Int?,
+        textIndex: Int?,
         styleIndex: Int?,
         attributeSet: AttributeSet,
         attributeFromStyle: Int,
         setTextResAction: (Int) -> Unit
     ) {
-        if (index != null) {
-            setTextIfExists(attributeSet, index, setTextResAction)
+        if (textIndex != null) {
+            setTextIfExists(attributeSet, textIndex, setTextResAction)
         } else styleIndex?.let {
             setTextIfExistsInStyle(
                 context = context,
@@ -26,15 +31,6 @@ interface ViewTransformer {
                 setTextResAction = setTextResAction
             )
         }
-    }
-
-    private fun setTextIfExists(
-        attributeSet: AttributeSet,
-        index: Int,
-        setTextResAction: (Int) -> Unit
-    ) {
-        attributeSet.getAttributeResourceValue(index, -1).takeIf { it != -1 }
-            ?.let { setTextResAction(it) }
     }
 
     private fun setTextIfExistsInStyle(
