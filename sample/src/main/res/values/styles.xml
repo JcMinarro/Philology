@@ -12,6 +12,10 @@
         <item name="android:text">@string/label</item>
     </style>
 
+    <style name="LabelCustomTextAtrStyle">
+        <item name="customTextAtr">@string/label</item>
+    </style>
+
     <style name="ToolbarStyle">
         <item name="android:title">@string/toolbar_title</item>
         <item name="android:subtitle">@string/toolbar_title</item>
