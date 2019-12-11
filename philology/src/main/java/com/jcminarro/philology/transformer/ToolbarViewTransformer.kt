@@ -19,11 +19,11 @@ internal object ToolbarViewTransformer : ViewTransformer {
         @StringRes val titleResId =
             context.getStringResourceId(attributeSet, android.R.attr.title)
         @StringRes val titleCompatResId =
-            context.getStringResourceId(attributeSet, android.R.attr.title)
+            context.getStringResourceId(attributeSet, androidx.appcompat.R.attr.title)
         @StringRes val subTitleResId =
             context.getStringResourceId(attributeSet, android.R.attr.subtitle)
         @StringRes val subTitleCompatResId =
-            context.getStringResourceId(attributeSet, android.R.attr.subtitle)
+            context.getStringResourceId(attributeSet, androidx.appcompat.R.attr.subtitle)
 
         if (titleResId > 0) setTitle(titleResId)
         else if (titleCompatResId > 0) setTitle(titleCompatResId)

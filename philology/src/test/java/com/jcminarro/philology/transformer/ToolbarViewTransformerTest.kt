@@ -3,12 +3,14 @@ package com.jcminarro.philology.transformer
 import android.content.Context
 import android.view.View
 import android.widget.Toolbar
-import com.jcminarro.philology.HardcodedAttribute
-import com.jcminarro.philology.ResourceIdAttribute
-import com.jcminarro.philology.StyleAttribute
+import com.jcminarro.philology.ResourceIdAttribute.CompatSubtitleAttribute
+import com.jcminarro.philology.ResourceIdAttribute.CompatTitleAttribute
+import com.jcminarro.philology.ResourceIdAttribute.SubtitleAttribute
+import com.jcminarro.philology.ResourceIdAttribute.TitleAttribute
 import com.jcminarro.philology.createAttributeSet
 import com.nhaarman.mockito_kotlin.doReturn
 import org.amshove.kluent.Verify
+import org.amshove.kluent.VerifyNotCalled
 import org.amshove.kluent.When
 import org.amshove.kluent.`Verify no further interactions`
 import org.amshove.kluent.`should be`
@@ -20,6 +22,11 @@ import org.amshove.kluent.that
 import org.amshove.kluent.was
 import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentMatchers.anyInt
+
+private const val TITLE_RES_ID = 1039982
+private const val SUBTITLE_RES_ID = 3879817
+private const val INVALID_RES_ID = -1
 
 class ToolbarViewTransformerTest {
 
@@ -34,17 +41,24 @@ class ToolbarViewTransformerTest {
 
     @Test
     fun `View should be the same`() {
-        ToolbarViewTransformer.reword(view, createAttributeSet()) `should be` view
+        ToolbarViewTransformer.reword(view, toolbar.createAttributeSet()) `should be` view
     }
 
     @Test
     fun `Inflated toolbar should be the same`() {
-        ToolbarViewTransformer.reword(toolbar, createAttributeSet()) `should be` toolbar
+        ToolbarViewTransformer.reword(
+            toolbar, toolbar.createAttributeSet(
+                TitleAttribute(TITLE_RES_ID),
+                SubtitleAttribute(INVALID_RES_ID),
+                CompatTitleAttribute(INVALID_RES_ID),
+                CompatSubtitleAttribute(INVALID_RES_ID)
+            )
+        ) `should be` toolbar
     }
 
     @Test
     fun `View shouldn't be modified`() {
-        ToolbarViewTransformer.reword(view, createAttributeSet())
+        ToolbarViewTransformer.reword(view, toolbar.createAttributeSet())
 
         `Verify no further interactions` on view
     }
@@ -52,96 +66,96 @@ class ToolbarViewTransformerTest {
     @Test
     fun `Should reword only the title`() {
         val viewResult = ToolbarViewTransformer.reword(
-            toolbar, createAttributeSet(
-                HardcodedAttribute("subtitle"),
-                ResourceIdAttribute("title")
+            toolbar, toolbar.createAttributeSet(
+                TitleAttribute(TITLE_RES_ID),
+                SubtitleAttribute(INVALID_RES_ID),
+                CompatTitleAttribute(INVALID_RES_ID),
+                CompatSubtitleAttribute(INVALID_RES_ID)
             )
         )
 
         viewResult `should be` toolbar
-        Verify on toolbar that toolbar.setTitle(1) was called
+        Verify on toolbar that toolbar.setTitle(TITLE_RES_ID) was called
+        VerifyNotCalled on toolbar that toolbar.setSubtitle(anyInt())
+    }
+
+    @Test
+    fun `Should reword only the compat title`() {
+        val viewResult = ToolbarViewTransformer.reword(
+            toolbar, toolbar.createAttributeSet(
+                CompatTitleAttribute(TITLE_RES_ID),
+                CompatSubtitleAttribute(INVALID_RES_ID),
+                TitleAttribute(INVALID_RES_ID),
+                SubtitleAttribute(INVALID_RES_ID)
+            )
+        )
+
+        viewResult `should be` toolbar
+        Verify on toolbar that toolbar.setTitle(TITLE_RES_ID) was called
+        VerifyNotCalled on toolbar that toolbar.setSubtitle(anyInt())
     }
 
     @Test
     fun `Should reword only the subtitle`() {
         val viewResult = ToolbarViewTransformer.reword(
-            toolbar, createAttributeSet(
-                HardcodedAttribute("title"),
-                ResourceIdAttribute("subtitle")
+            toolbar, toolbar.createAttributeSet(
+                SubtitleAttribute(SUBTITLE_RES_ID),
+                TitleAttribute(INVALID_RES_ID),
+                CompatTitleAttribute(INVALID_RES_ID),
+                CompatSubtitleAttribute(INVALID_RES_ID)
             )
         )
 
         viewResult `should be` toolbar
-        Verify on toolbar that toolbar.setSubtitle(1) was called
+        Verify on toolbar that toolbar.setSubtitle(SUBTITLE_RES_ID) was called
+        VerifyNotCalled on toolbar that toolbar.setTitle(anyInt())
+    }
+
+    @Test
+    fun `Should reword only the compat subtitle`() {
+        val viewResult = ToolbarViewTransformer.reword(
+            toolbar, toolbar.createAttributeSet(
+                CompatSubtitleAttribute(SUBTITLE_RES_ID),
+                CompatTitleAttribute(INVALID_RES_ID),
+                SubtitleAttribute(INVALID_RES_ID),
+                TitleAttribute(INVALID_RES_ID)
+            )
+        )
+
+        viewResult `should be` toolbar
+        Verify on toolbar that toolbar.setSubtitle(SUBTITLE_RES_ID) was called
+        VerifyNotCalled on toolbar that toolbar.setTitle(anyInt())
     }
 
     @Test
     fun `Should reword title and subtitle`() {
         val viewResult = ToolbarViewTransformer.reword(
-            toolbar, createAttributeSet(
-                ResourceIdAttribute("title"),
-                ResourceIdAttribute("subtitle")
+            toolbar, toolbar.createAttributeSet(
+                TitleAttribute(TITLE_RES_ID),
+                SubtitleAttribute(SUBTITLE_RES_ID),
+                CompatTitleAttribute(INVALID_RES_ID),
+                CompatSubtitleAttribute(INVALID_RES_ID)
             )
         )
 
         viewResult `should be` toolbar
-        Verify on toolbar that toolbar.setTitle(0) was called
-        Verify on toolbar that toolbar.setSubtitle(1) was called
+        Verify on toolbar that toolbar.setTitle(TITLE_RES_ID) was called
+        Verify on toolbar that toolbar.setSubtitle(SUBTITLE_RES_ID) was called
     }
 
     @Test
-    fun `Should reword only the title from style`() {
+    fun `Should reword compat title and subtitle`() {
         val viewResult = ToolbarViewTransformer.reword(
-            toolbar, createAttributeSet(
-                StyleAttribute(intArrayOf(android.R.attr.title)),
-                context = context
+            toolbar, toolbar.createAttributeSet(
+                CompatTitleAttribute(TITLE_RES_ID),
+                CompatSubtitleAttribute(SUBTITLE_RES_ID),
+                TitleAttribute(INVALID_RES_ID),
+                SubtitleAttribute(INVALID_RES_ID)
             )
         )
 
         viewResult `should be` toolbar
-        Verify on toolbar that toolbar.setTitle(0) was called
-    }
-
-    @Test
-    fun `Should reword only the subtitle from style`() {
-        val viewResult = ToolbarViewTransformer.reword(
-            toolbar, createAttributeSet(
-                StyleAttribute(intArrayOf(android.R.attr.subtitle)),
-                context = context
-            )
-        )
-
-        viewResult `should be` toolbar
-        Verify on toolbar that toolbar.setSubtitle(0) was called
-    }
-
-    @Test
-    fun `Should reword title and subtitle from style`() {
-        val viewResult = ToolbarViewTransformer.reword(
-            toolbar, createAttributeSet(
-                StyleAttribute(intArrayOf(android.R.attr.title, android.R.attr.subtitle)),
-                context = context
-            )
-        )
-
-        viewResult `should be` toolbar
-        Verify on toolbar that toolbar.setTitle(0) was called
-        Verify on toolbar that toolbar.setSubtitle(0) was called
-    }
-
-    @Test
-    fun `Should reword title and subtitle from attributes ignoring style`() {
-        val viewResult = ToolbarViewTransformer.reword(
-            toolbar, createAttributeSet(
-                ResourceIdAttribute("title"),
-                ResourceIdAttribute("subtitle"),
-                StyleAttribute(intArrayOf(android.R.attr.title, android.R.attr.subtitle)),
-                context = context
-            )
-        )
-
-        viewResult `should be` toolbar
-        Verify on toolbar that toolbar.setTitle(0) was called
-        Verify on toolbar that toolbar.setSubtitle(1) was called
+        Verify on toolbar that toolbar.setTitle(TITLE_RES_ID) was called
+        Verify on toolbar that toolbar.setSubtitle(SUBTITLE_RES_ID) was called
     }
 }

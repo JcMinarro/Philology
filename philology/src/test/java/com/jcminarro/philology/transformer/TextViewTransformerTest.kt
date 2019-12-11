@@ -3,9 +3,8 @@ package com.jcminarro.philology.transformer
 import android.content.Context
 import android.view.View
 import android.widget.TextView
-import com.jcminarro.philology.HardcodedAttribute
-import com.jcminarro.philology.ResourceIdAttribute
-import com.jcminarro.philology.StyleAttribute
+import com.jcminarro.philology.ResourceIdAttribute.HintAttribute
+import com.jcminarro.philology.ResourceIdAttribute.TextAttribute
 import com.jcminarro.philology.createAttributeSet
 import com.nhaarman.mockito_kotlin.doReturn
 import org.amshove.kluent.Verify
@@ -21,6 +20,11 @@ import org.amshove.kluent.that
 import org.amshove.kluent.was
 import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentMatchers.anyInt
+
+private const val TEXT_RES_ID = 1039982
+private const val HINT_RES_ID = 3879817
+private const val INVALID_RES_ID = -1
 
 class TextViewTransformerTest {
 
@@ -35,17 +39,22 @@ class TextViewTransformerTest {
 
     @Test
     fun `View should be the same`() {
-        TextViewTransformer.reword(view, createAttributeSet()) `should be` view
+        TextViewTransformer.reword(view, textView.createAttributeSet()) `should be` view
     }
 
     @Test
     fun `Inflated textView should be the same`() {
-        TextViewTransformer.reword(textView, createAttributeSet()) `should be` textView
+        TextViewTransformer.reword(
+            textView, textView.createAttributeSet(
+                TextAttribute(INVALID_RES_ID),
+                HintAttribute(INVALID_RES_ID)
+            )
+        ) `should be` textView
     }
 
     @Test
     fun `View shouldn't be modified`() {
-        TextViewTransformer.reword(view, createAttributeSet())
+        TextViewTransformer.reword(view, textView.createAttributeSet())
 
         `Verify no further interactions` on view
     }
@@ -53,94 +62,42 @@ class TextViewTransformerTest {
     @Test
     fun `Should reword only the text`() {
         val viewResult = TextViewTransformer.reword(
-            textView, createAttributeSet(
-                HardcodedAttribute("hint"),
-                ResourceIdAttribute("text")
+            textView, textView.createAttributeSet(
+                TextAttribute(TEXT_RES_ID),
+                HintAttribute(INVALID_RES_ID)
             )
         )
 
         viewResult `should be` textView
-        Verify on textView that textView.setText(1) was called
+        Verify on textView that textView.setText(TEXT_RES_ID) was called
+        VerifyNotCalled on textView that textView.setHint(anyInt())
     }
 
     @Test
     fun `Should reword only the hint`() {
         val viewResult = TextViewTransformer.reword(
-            textView, createAttributeSet(
-                HardcodedAttribute("text"),
-                ResourceIdAttribute("hint")
+            textView, textView.createAttributeSet(
+                TextAttribute(INVALID_RES_ID),
+                HintAttribute(HINT_RES_ID)
             )
         )
 
         viewResult `should be` textView
-        Verify on textView that textView.setHint(1) was called
+        Verify on textView that textView.setHint(HINT_RES_ID) was called
+        VerifyNotCalled on textView that textView.setText(anyInt())
     }
 
     @Test
     fun `Should reword text and hint`() {
         val viewResult = TextViewTransformer.reword(
-            textView, createAttributeSet(
-                ResourceIdAttribute("text"),
-                ResourceIdAttribute("hint")
+            textView, textView.createAttributeSet(
+                TextAttribute(TEXT_RES_ID),
+                HintAttribute(HINT_RES_ID)
             )
         )
 
         viewResult `should be` textView
-        Verify on textView that textView.setText(0) was called
-        Verify on textView that textView.setHint(1) was called
-    }
-
-    @Test
-    fun `Should reword only text from style`() {
-        val viewResult = TextViewTransformer.reword(
-            textView,
-            createAttributeSet(StyleAttribute(intArrayOf(android.R.attr.text)), context = context)
-        )
-
-        viewResult `should be` textView
-        Verify on textView that textView.setText(0) was called
-        VerifyNotCalled on textView that textView.setHint(0)
-    }
-
-    @Test
-    fun `Should reword only hint from style`() {
-        val viewResult = TextViewTransformer.reword(
-            textView,
-            createAttributeSet(StyleAttribute(intArrayOf(android.R.attr.hint)), context = context)
-        )
-
-        viewResult `should be` textView
-        Verify on textView that textView.setHint(0) was called
-    }
-
-    @Test
-    fun `Should reword text and hint from style`() {
-        val viewResult = TextViewTransformer.reword(
-            textView,
-            createAttributeSet(
-                StyleAttribute(intArrayOf(android.R.attr.text, android.R.attr.hint)),
-                context = context
-            )
-        )
-
-        viewResult `should be` textView
-        Verify on textView that textView.setText(0) was called
-        Verify on textView that textView.setHint(0) was called
-    }
-
-    @Test
-    fun `Should reword text and hint from attributes ignoring style`() {
-        val viewResult = TextViewTransformer.reword(
-            textView, createAttributeSet(
-                ResourceIdAttribute("text"),
-                ResourceIdAttribute("hint"),
-                StyleAttribute(intArrayOf(android.R.attr.text, android.R.attr.hint)),
-                context = context
-            )
-        )
-
-        viewResult `should be` textView
-        Verify on textView that textView.setText(0) was called
-        Verify on textView that textView.setHint(1) was called
+        Verify on textView that textView.setText(TEXT_RES_ID) was called
+        Verify on textView that textView.setHint(HINT_RES_ID) was called
     }
 }

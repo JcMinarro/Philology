@@ -6,12 +6,10 @@ import android.content.res.Resources
 import android.content.res.TypedArray
 import android.os.LocaleList
 import android.util.AttributeSet
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.doAnswer
+import android.view.View
+import androidx.annotation.AttrRes
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.doThrow
-import com.nhaarman.mockito_kotlin.eq
-import com.nhaarman.mockito_kotlin.whenever
 import org.amshove.kluent.When
 import org.amshove.kluent.calling
 import org.amshove.kluent.mock
@@ -90,51 +88,37 @@ fun configurePhilology(repository: PhilologyRepository, locale: Locale = Locale.
     Philology.init(createFactory(locale to repository))
 }
 
-fun createAttributeSet(
-    vararg attributeType: AttributeType,
-    context: Context = mock()
-): AttributeSet = mock<AttributeSet>().apply {
-    attributeType.forEachIndexed { index, at ->
-        when (at) {
-            is HardcodedAttribute -> {
-                whenever(this.getAttributeResourceValue(eq(index), any()))
-                    .doAnswer { it.arguments[1] as Int }
-            }
-            is ResourceIdAttribute -> {
-                When calling this.getAttributeResourceValue(eq(index), any()) doReturn index
-            }
-            is StyleAttribute -> {
-                prepareStyledAttributes(context, at, index)
-                When calling this.getAttributeResourceValue(eq(index), any()) doReturn index
-            }
+fun View.createAttributeSet(vararg attributeType: ResourceIdAttribute): AttributeSet {
+    val context = mock<Context>()
+    When calling this.context doReturn context
+    return mock<AttributeSet>().apply {
+        attributeType.forEachIndexed { _, at ->
+            val typedArray = mock<TypedArray>()
+            When calling typedArray.getResourceId(0, -1) doReturn at.stringResId
+            When calling context.obtainStyledAttributes(
+                this,
+                intArrayOf(at.attrResId)
+            ) doReturn typedArray
         }
-        When calling this.getAttributeName(index) doReturn at.key
     }
-    When calling this.attributeCount doReturn attributeType.size
 }
 
-fun prepareStyledAttributes(context: Context, style: StyleAttribute, index: Int) {
-    whenever(context.obtainStyledAttributes(any<Int>(), any()))
-        .doAnswer {
-            val isPresentInAttributes =
-                style.styleAttributes.contains(it.getArgument<IntArray>(1).first())
-            mock<TypedArray>().apply {
-                if (isPresentInAttributes) {
-                    When calling this.getResourceId(0, -1) doReturn index
-                } else {
-                    When calling this.getResourceId(0, -1) doReturn -1
-                }
-            }
-        }
-}
+sealed class ResourceIdAttribute(@AttrRes val attrResId: Int, open val stringResId: Int) {
+    data class TextAttribute(override val stringResId: Int) :
+        ResourceIdAttribute(android.R.attr.text, stringResId)
 
-sealed class AttributeType {
-    abstract val key: String
-}
+    data class HintAttribute(override val stringResId: Int) :
+        ResourceIdAttribute(android.R.attr.hint, stringResId)
 
-data class HardcodedAttribute(override val key: String) : AttributeType()
-data class ResourceIdAttribute(override val key: String) : AttributeType()
-data class StyleAttribute(
-    val styleAttributes: IntArray,
-    override val key: String = "style"
-) : AttributeType()
+    data class TitleAttribute(override val stringResId: Int) :
+        ResourceIdAttribute(android.R.attr.title, stringResId)
+
+    data class CompatTitleAttribute(override val stringResId: Int) :
+        ResourceIdAttribute(androidx.appcompat.R.attr.title, stringResId)
+
+    data class SubtitleAttribute(override val stringResId: Int) :
+        ResourceIdAttribute(android.R.attr.subtitle, stringResId)
+
+    data class CompatSubtitleAttribute(override val stringResId: Int) :
+        ResourceIdAttribute(androidx.appcompat.R.attr.subtitle, stringResId)
+}
