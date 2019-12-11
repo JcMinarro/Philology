@@ -2,6 +2,8 @@
     <string name="app_name">Philology Sample</string>
     <string name="toolbar_title">Philology Sample</string>
     <string name="label">It is the default value that we have into our strings resource file</string>
+    <string name="plural_quantity_hint">Plural quantity edit</string>
+    <string name="plural_quantity_format_hint">Plural quantity format edit</string>
     <plurals name="plurals_sample">
         <item quantity="one">One test</item>
         <item quantity="other">Other tests</item>
