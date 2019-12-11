@@ -21,9 +21,9 @@ internal object ToolbarViewTransformer : ViewTransformer {
         @StringRes val titleCompatResId =
             context.getStringResourceId(attributeSet, android.R.attr.title)
         @StringRes val subTitleResId =
-            context.getStringResourceId(attributeSet, android.R.attr.title)
+            context.getStringResourceId(attributeSet, android.R.attr.subtitle)
         @StringRes val subTitleCompatResId =
-            context.getStringResourceId(attributeSet, android.R.attr.title)
+            context.getStringResourceId(attributeSet, android.R.attr.subtitle)
 
         if (titleResId > 0) setTitle(titleResId)
         else if (titleCompatResId > 0) setTitle(titleCompatResId)
