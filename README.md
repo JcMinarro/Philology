@@ -153,7 +153,6 @@ Philology allows you to reword your own CustomViews, the only that you need to d
 Kotlin:
 ```kotlin
 object MyCustomViewTransformer : ViewTransformer {
-    private const val MY_CUSTOM_ATTRIBUTE_NAME = "text"
     override fun reword(view: View, attributeSet: AttributeSet): View = view.apply {
         when (this) {
             is MyCustomView -> reword(attributeSet)
@@ -161,11 +160,8 @@ object MyCustomViewTransformer : ViewTransformer {
     }
 
     private fun MyCustomView.reword(attributeSet: AttributeSet) {
-        attributeSet.forEach {
-            when (attributeSet.getAttributeName(it)) {
-                TEXT -> setTextIfExists(attributeSet, it, this::setTextToMyCustomView)
-            }
-        }
+        @StringRes val textResId = context.getStringResourceId(attributeSet, R.styleable.MyCustomView_text)
+        if (textResId > 0) setTextToMyCustomView(textResId)
     }
 }
 ```
@@ -176,16 +172,12 @@ public class MyCustomViewTransformer extends ViewTransformer {
     private static String MY_CUSTOM_ATTRIBUTE_NAME = "text";
     @NotNull
     @Override
-    public View reword(@NotNull final View view, @NotNull AttributeSet attributeSet) {
+    public View reword(@NotNull View view, @NotNull AttributeSet attributeSet) {
         if (view instanceof MyCustomView) {
             MyCustomView myCustomView = (MyCustomView) view;
-            for (int index=0; index<attributeSet.getAttributeCount(); index++) {
-                if (MY_CUSTOM_ATTRIBUTE_NAME.equals(attributeSet.getAttributeName(index))) {
-                    int resourceValue = attributeSet.getAttributeResourceValue(index, -1);
-                    if (resourceValue != -1) {
-                        myCustomView.setTextToMyCustomView(resourceValue))
-                    }
-                }
+            int textResId = getStringResourceId(myCustomView.getContext(), attributeSet, R.styleable.MyCustomView_text);
+            if (textResId > 0) {
+                myCustomView.setTextToMyCustomView(textResId);
             }
         }
         return view;
