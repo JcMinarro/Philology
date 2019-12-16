@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Support for texts attributes from style by [Ilya Ghirici](https://github.com/Ilya-Gh)
+- Improve how Text Resources Ids are read from attributes creating the new extension `Context.getStringResourceId()` by [Valerii Turcan](https://github.com/ffelini)
+
+### Breaking changes
+- `ViewTransformer#setTextIfExists` has been removed
 
 ## [2.0.1]
 _2019-11-07_ [Github Diff](https://github.com/jcminarro/Philology/compare/v-2.0.0...v-2.0.1)
