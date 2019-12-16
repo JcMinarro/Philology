@@ -4,13 +4,11 @@ import android.annotation.SuppressLint
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Toolbar
+import androidx.annotation.StringRes
 import com.jcminarro.philology.ViewTransformer
 
 @SuppressLint("NewApi")
 internal object ToolbarViewTransformer : ViewTransformer {
-    private const val TITLE = "title"
-    private const val SUBTITLE = "subtitle"
-    private const val STYLE = "style"
     override fun reword(view: View, attributeSet: AttributeSet): View = view.apply {
         when (this) {
             is Toolbar -> reword(attributeSet)
@@ -18,31 +16,19 @@ internal object ToolbarViewTransformer : ViewTransformer {
     }
 
     private fun Toolbar.reword(attributeSet: AttributeSet) {
-        var titleIndex: Int? = null
-        var subtitleIndex: Int? = null
-        var styleIndex: Int? = null
-        attributeSet.forEach { index ->
-            when (attributeSet.getAttributeName(index)) {
-                TITLE -> titleIndex = index
-                SUBTITLE -> subtitleIndex = index
-                STYLE -> styleIndex = index
-            }
-        }
-        setTextIfExists(
-            context,
-            titleIndex,
-            styleIndex,
-            attributeSet,
-            android.R.attr.title,
-            this::setTitle
-        )
-        setTextIfExists(
-            context,
-            subtitleIndex,
-            styleIndex,
-            attributeSet,
-            android.R.attr.subtitle,
-            this::setSubtitle
-        )
+        @StringRes val titleResId =
+            context.getStringResourceId(attributeSet, android.R.attr.title)
+        @StringRes val titleCompatResId =
+            context.getStringResourceId(attributeSet, androidx.appcompat.R.attr.title)
+        @StringRes val subTitleResId =
+            context.getStringResourceId(attributeSet, android.R.attr.subtitle)
+        @StringRes val subTitleCompatResId =
+            context.getStringResourceId(attributeSet, androidx.appcompat.R.attr.subtitle)
+
+        if (titleResId > 0) setTitle(titleResId)
+        else if (titleCompatResId > 0) setTitle(titleCompatResId)
+
+        if (subTitleResId > 0) setSubtitle(subTitleResId)
+        else if (subTitleCompatResId > 0) setSubtitle(subTitleCompatResId)
     }
 }
