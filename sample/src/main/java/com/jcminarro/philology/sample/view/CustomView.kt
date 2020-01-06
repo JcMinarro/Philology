@@ -20,12 +20,12 @@ class CustomView @JvmOverloads constructor(
     init {
         View.inflate(context, R.layout.layout_custom_view, this)
         val width = resources.getDimensionPixelSize(R.dimen.text_width)
-        textView.text = "Width = " + width
+        textView.text = "Width = $width"
     }
 
     override fun onConfigurationChanged(newConfig: Configuration?) {
         super.onConfigurationChanged(newConfig)
         val width = resources.getDimensionPixelSize(R.dimen.text_width)
-        textView.text = "Width = " + width
+        textView.text = "Width = $width"
     }
 }
