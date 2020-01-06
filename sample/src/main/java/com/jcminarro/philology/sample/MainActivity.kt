@@ -1,6 +1,7 @@
 package com.jcminarro.philology.sample
 
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
