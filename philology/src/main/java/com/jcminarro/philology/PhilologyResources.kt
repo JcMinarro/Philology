@@ -1,5 +1,6 @@
 package com.jcminarro.philology
 
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.res.AssetFileDescriptor
 import android.content.res.ColorStateList
@@ -126,6 +127,7 @@ internal class PhilologyResources(
     override fun getLayout(id: Int): XmlResourceParser = baseResources.getLayout(id)
 
     @RequiresApi(VERSION_CODES.O)
+    @SuppressLint("NewApi")
     override fun getFont(id: Int): Typeface = baseResources.getFont(id)
 
     override fun getXml(id: Int): XmlResourceParser = baseResources.getXml(id)
