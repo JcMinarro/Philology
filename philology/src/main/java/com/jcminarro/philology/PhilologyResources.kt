@@ -128,10 +128,6 @@ internal class PhilologyResources(
     @RequiresApi(VERSION_CODES.O)
     override fun getFont(id: Int): Typeface = baseResources.getFont(id)
 
-    override fun updateConfiguration(config: Configuration?, metrics: DisplayMetrics?) {
-        baseResources.updateConfiguration(config, metrics)
-    }
-
     override fun getXml(id: Int): XmlResourceParser = baseResources.getXml(id)
 
     override fun getResourceName(resid: Int): String = baseResources.getResourceName(resid)
