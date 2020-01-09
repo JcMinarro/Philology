@@ -2,6 +2,10 @@ package com.jcminarro.philology
 
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.content.res.Resources.Theme
+import android.content.res.XmlResourceParser
+import android.graphics.drawable.Drawable
+import android.util.DisplayMetrics
 import com.nhaarman.mockito_kotlin.doReturn
 import org.amshove.kluent.When
 import org.amshove.kluent.`should equal`
@@ -162,5 +166,26 @@ class PhilologyResourcesTest {
         configureResourceGetTextArray(baseResources, id, nameId, textArray)
         configurePhilology(createRepository(nameId, textArray = textArray))
         resources.getTextArray(id) `should equal` textArray
+    }
+
+    @Test
+    fun `Should return an XmlResourceParser from base resources asking for an Animation`() {
+        val xmlResourceParser = mock<XmlResourceParser>()
+        When calling baseResources.getAnimation(id) doReturn xmlResourceParser
+        resources.getAnimation(id) `should equal` xmlResourceParser
+    }
+
+    @Test
+    fun `Should return a DisplayMetrics from base resources asking for a display metrics`() {
+        val displayMetrics = mock<DisplayMetrics>()
+        When calling baseResources.displayMetrics doReturn displayMetrics
+        resources.displayMetrics `should equal` displayMetrics
+    }
+
+    @Test
+    fun `Should return a Drawable from base resources asking for a drawable for density`() {
+        val drawable = mock<Drawable>()
+        When calling baseResources.getDrawableForDensity(id, 2) doReturn drawable
+        resources.getDrawableForDensity(id, 2) `should equal` drawable
     }
 }
