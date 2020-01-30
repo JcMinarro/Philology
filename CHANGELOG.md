@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Delegate Non-implemented methods of Resources into the baseResources by [Serghei Ceacal](https://github.com/antercepter)
 
 ## [2.1.0]
 _2019-12-16_ [Github Diff](https://github.com/jcminarro/Philology/compare/v-2.0.1...v-2.1.0)
