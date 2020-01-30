@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Delegate Non-implemented methods of Resources into the baseResources by [Serghei Ceacal](https://github.com/antercepter)
+- Upgrade Kotlin to version 1.3.61
+- Upgrade Kluent to version 1.60
+- Upgrade Gradle to version 6.1.1
 
 ## [2.1.0]
 _2019-12-16_ [Github Diff](https://github.com/jcminarro/Philology/compare/v-2.0.1...v-2.1.0)
