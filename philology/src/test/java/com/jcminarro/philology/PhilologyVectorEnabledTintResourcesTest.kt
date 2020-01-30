@@ -5,8 +5,10 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import com.nhaarman.mockito_kotlin.doReturn
 import org.amshove.kluent.When
-import org.amshove.kluent.`should equal`
+import org.amshove.kluent.`should be equal to`
+import org.amshove.kluent.`should throw`
 import org.amshove.kluent.calling
+import org.amshove.kluent.invoking
 import org.amshove.kluent.mock
 import org.junit.Before
 import org.junit.Test
@@ -30,41 +32,41 @@ class PhilologyVectorEnabledTintResourcesTest {
         When calling baseResources.configuration doReturn configuration
     }
 
-    @Test(expected = Resources.NotFoundException::class)
+    @Test
     fun `Should throw an exception if the given id doesn't exit asking for a text`() {
         configureResourceGetIdException(baseResources, id)
-        resources.getText(id)
+        invoking { resources.getText(id) } `should throw` Resources.NotFoundException::class
     }
 
-    @Test()
+    @Test
     fun `Should return a CharSecuence asking for a text`() {
         configureResourceGetText(baseResources, id, nameId, someCharSequence)
-        resources.getText(id) `should equal` someCharSequence
+        resources.getText(id) `should be equal to` someCharSequence
     }
 
-    @Test(expected = Resources.NotFoundException::class)
+    @Test
     fun `Should throw an exception if the given id doesn't exit asking for an String`() {
         configureResourceGetIdException(baseResources, id)
-        resources.getString(id)
+        invoking { resources.getString(id) } `should throw` Resources.NotFoundException::class
     }
 
-    @Test()
+    @Test
     fun `Should return a CharSecuence asking for an String`() {
         configureResourceGetText(baseResources, id, nameId, someCharSequence)
-        resources.getString(id) `should equal` someString
+        resources.getString(id) `should be equal to` someString
     }
 
-    @Test()
+    @Test
     fun `Should return a CharSecuence from repository asking for a text`() {
         configureResourceGetText(baseResources, id, nameId, someCharSequence)
         configurePhilology(createRepository(nameId, null, repoCharSequence))
-        resources.getText(id) `should equal` repoCharSequence
+        resources.getText(id) `should be equal to` repoCharSequence
     }
 
-    @Test()
+    @Test
     fun `Should return a CharSecuence from repository asking for an String`() {
         configureResourceGetText(baseResources, id, nameId, someCharSequence)
         configurePhilology(createRepository(nameId, null, repoCharSequence))
-        resources.getString(id) `should equal` repoString
+        resources.getString(id) `should be equal to` repoString
     }
 }

@@ -4,8 +4,10 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import com.nhaarman.mockito_kotlin.doReturn
 import org.amshove.kluent.When
-import org.amshove.kluent.`should equal`
+import org.amshove.kluent.`should be equal to`
+import org.amshove.kluent.`should throw`
 import org.amshove.kluent.calling
+import org.amshove.kluent.invoking
 import org.amshove.kluent.mock
 import org.junit.Before
 import org.junit.Test
@@ -31,81 +33,81 @@ class ResourcesUtilTest {
         When calling baseResources.configuration doReturn configuration
     }
 
-    @Test(expected = Resources.NotFoundException::class)
+    @Test
     fun `Should throw an exception if the given id doesn't exist asking for a text`() {
         configureResourceGetIdException(baseResources, id)
-        resources.getText(id)
+        invoking { resources.getText(id) } `should throw` Resources.NotFoundException::class
     }
 
     @Test
     fun `Should return a CharSequence asking for a text`() {
         configureResourceGetText(baseResources, id, nameId, someCharSequence)
-        resources.getText(id) `should equal` someCharSequence
+        resources.getText(id) `should be equal to` someCharSequence
     }
 
-    @Test(expected = Resources.NotFoundException::class)
+    @Test
     fun `Should throw an exception if the given id doesn't exist asking for an String`() {
         configureResourceGetIdException(baseResources, id)
-        resources.getString(id)
-    }
+        invoking { resources.getString(id) } `should throw` Resources.NotFoundException::class
+        }
 
     @Test
     fun `Should return a CharSequence asking for an String`() {
         configureResourceGetText(baseResources, id, nameId, someCharSequence)
-        resources.getString(id) `should equal` someString
+        resources.getString(id) `should be equal to` someString
     }
 
     @Test
     fun `Should return a CharSequence from repository asking for a text`() {
         configureResourceGetText(baseResources, id, nameId, someCharSequence)
         configurePhilology(createRepository(nameId, null, repoCharSequence))
-        resources.getText(id) `should equal` repoCharSequence
+        resources.getText(id) `should be equal to` repoCharSequence
     }
 
     @Test
     fun `Should return a CharSequence from repository asking for an String`() {
         configureResourceGetText(baseResources, id, nameId, someCharSequence)
         configurePhilology(createRepository(nameId, null, repoCharSequence))
-        resources.getString(id) `should equal` repoString
+        resources.getString(id) `should be equal to` repoString
     }
 
-    @Test(expected = Resources.NotFoundException::class)
+    @Test
     fun `Should throw an exception if the given id doesn't exist asking for a quantity text`() {
         configureResourceGetIdException(baseResources, id)
-        resources.getQuantityText(id, quantity)
+        invoking { resources.getQuantityText(id, quantity) } `should throw` Resources.NotFoundException::class
     }
 
     @Test
     fun `Should return a CharSequence asking for a quantity text`() {
         configureResourceQuantityString(baseResources, quantity, "one")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
-        resources.getQuantityText(id, quantity) `should equal` someCharSequence
+        resources.getQuantityText(id, quantity) `should be equal to` someCharSequence
     }
 
-    @Test(expected = Resources.NotFoundException::class)
+    @Test
     fun `Should throw an exception if the given id doesn't exist asking for an quantity String`() {
         configureResourceGetIdException(baseResources, id)
-        resources.getQuantityString(id, quantity)
+        invoking { resources.getQuantityString(id, quantity) } `should throw` Resources.NotFoundException::class
     }
 
     @Test
     fun `Should return a CharSequence asking for an quantity String`() {
         configureResourceQuantityString(baseResources, quantity, "one")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
-        resources.getQuantityString(id, quantity) `should equal` someString
+        resources.getQuantityString(id, quantity) `should be equal to` someString
     }
 
-    @Test(expected = Resources.NotFoundException::class)
+    @Test
     fun `Should throw an exception if id doesn't exist asking for an formatted quantity String`() {
         configureResourceGetIdException(baseResources, id)
-        resources.getQuantityString(id, quantity, formatArg)
+        invoking { resources.getQuantityString(id, quantity, formatArg) } `should throw` Resources.NotFoundException::class
     }
 
     @Test
     fun `Should return a CharSequence asking for an formatted quantity String`() {
         configureResourceQuantityString(baseResources, quantity, "one")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, "$someCharSequence%s")
-        resources.getQuantityString(id, quantity, formatArg) `should equal` someString + formatArg
+        resources.getQuantityString(id, quantity, formatArg) `should be equal to` someString + formatArg
     }
 
     @Test
@@ -117,7 +119,7 @@ class ResourcesUtilTest {
         configureResourceQuantityString(baseResources, quantity, "zero")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "zero", repoCharSequence), locale)
-        resources.getQuantityText(id, quantity) `should equal` repoCharSequence
+        resources.getQuantityText(id, quantity) `should be equal to` repoCharSequence
     }
 
     @Test
@@ -129,7 +131,7 @@ class ResourcesUtilTest {
         configureResourceQuantityString(baseResources, quantity, "zero")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "zero", repoCharSequence), locale)
-        resources.getQuantityText(id, quantity) `should equal` repoString
+        resources.getQuantityText(id, quantity) `should be equal to` repoString
     }
 
     @Test
@@ -138,7 +140,7 @@ class ResourcesUtilTest {
         configureResourceQuantityString(baseResources, quantity, "one")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "one", repoCharSequence))
-        resources.getQuantityText(id, quantity) `should equal` repoCharSequence
+        resources.getQuantityText(id, quantity) `should be equal to` repoCharSequence
     }
 
     @Test
@@ -147,7 +149,7 @@ class ResourcesUtilTest {
         configureResourceQuantityString(baseResources, quantity, "one")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "one", repoCharSequence))
-        resources.getQuantityText(id, quantity) `should equal` repoString
+        resources.getQuantityText(id, quantity) `should be equal to` repoString
     }
 
     @Test
@@ -159,7 +161,7 @@ class ResourcesUtilTest {
         configureResourceQuantityString(baseResources, quantity, "two")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "two", repoCharSequence), locale)
-        resources.getQuantityText(id, quantity) `should equal` repoCharSequence
+        resources.getQuantityText(id, quantity) `should be equal to` repoCharSequence
     }
 
     @Test
@@ -171,7 +173,7 @@ class ResourcesUtilTest {
         configureResourceQuantityString(baseResources, quantity, "two")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "two", repoCharSequence), locale)
-        resources.getQuantityText(id, quantity) `should equal` repoString
+        resources.getQuantityText(id, quantity) `should be equal to` repoString
     }
 
     @Test
@@ -183,7 +185,7 @@ class ResourcesUtilTest {
         configureResourceQuantityString(baseResources, quantity, "few")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "few", repoCharSequence), locale)
-        resources.getQuantityText(id, quantity) `should equal` repoCharSequence
+        resources.getQuantityText(id, quantity) `should be equal to` repoCharSequence
     }
 
     @Test
@@ -195,7 +197,7 @@ class ResourcesUtilTest {
         configureResourceQuantityString(baseResources, quantity, "few")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "few", repoCharSequence), locale)
-        resources.getQuantityText(id, quantity) `should equal` repoString
+        resources.getQuantityText(id, quantity) `should be equal to` repoString
     }
 
     @Test
@@ -207,7 +209,7 @@ class ResourcesUtilTest {
         configureResourceQuantityString(baseResources, quantity, "many")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "many", repoCharSequence), locale)
-        resources.getQuantityText(id, quantity) `should equal` repoCharSequence
+        resources.getQuantityText(id, quantity) `should be equal to` repoCharSequence
     }
 
     @Test
@@ -219,7 +221,7 @@ class ResourcesUtilTest {
         configureResourceQuantityString(baseResources, quantity, "many")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "many", repoCharSequence), locale)
-        resources.getQuantityText(id, quantity) `should equal` repoString
+        resources.getQuantityText(id, quantity) `should be equal to` repoString
     }
 
     @Test
@@ -228,7 +230,7 @@ class ResourcesUtilTest {
         configureResourceQuantityString(baseResources, quantity, "other")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "other", repoCharSequence))
-        resources.getQuantityText(id, quantity) `should equal` repoCharSequence
+        resources.getQuantityText(id, quantity) `should be equal to` repoCharSequence
     }
 
     @Test
@@ -237,33 +239,33 @@ class ResourcesUtilTest {
         configureResourceQuantityString(baseResources, quantity, "other")
         configureResourceGetQuantityText(baseResources, id, nameId, quantity, someCharSequence)
         configurePhilology(createRepository(nameId, "other", repoCharSequence))
-        resources.getQuantityText(id, quantity) `should equal` repoString
+        resources.getQuantityText(id, quantity) `should be equal to` repoString
     }
 
-    @Test(expected = Resources.NotFoundException::class)
+    @Test
     fun `Should throw an exception if the given id doesn't exist asking for text array`() {
         configureResourceGetIdException(baseResources, id)
-        resources.getTextArray(id)
+        invoking { resources.getTextArray(id) } `should throw` Resources.NotFoundException::class
     }
 
     @Test
     fun `Should return an array of strings asking for a text array`() {
         val textArray: Array<CharSequence> = arrayOf("first", "second")
         configureResourceGetTextArray(baseResources, id, nameId, textArray)
-        resources.getTextArray(id) `should equal` textArray
+        resources.getTextArray(id) `should be equal to` textArray
     }
 
-    @Test(expected = Resources.NotFoundException::class)
+    @Test
     fun `Should throw an exception if the given id doesn't exist asking for a string array`() {
         configureResourceGetIdException(baseResources, id)
-        resources.getStringArray(id)
+        invoking { resources.getStringArray(id) } `should throw` Resources.NotFoundException::class
     }
 
     @Test
     fun `Should return an array of strings asking for a string array`() {
         val textArray: Array<CharSequence> = arrayOf("first", "second")
         configureResourceGetTextArray(baseResources, id, nameId, textArray)
-        resources.getStringArray(id) `should equal` textArray.map { it.toString() }.toTypedArray()
+        resources.getStringArray(id) `should be equal to` textArray.map { it.toString() }.toTypedArray()
     }
 
     @Test
@@ -271,7 +273,7 @@ class ResourcesUtilTest {
         val textArray: Array<CharSequence> = arrayOf("first", "second")
         configureResourceGetTextArray(baseResources, id, nameId, textArray)
         configurePhilology(createRepository(nameId, textArray = textArray))
-        resources.getTextArray(id) `should equal` textArray
+        resources.getTextArray(id) `should be equal to` textArray
     }
 
     @Test
@@ -279,6 +281,6 @@ class ResourcesUtilTest {
         val textArray: Array<CharSequence> = arrayOf("first", "second")
         configureResourceGetTextArray(baseResources, id, nameId, textArray)
         configurePhilology(createRepository(nameId, textArray = textArray))
-        resources.getStringArray(id) `should equal` textArray.map { it.toString() }.toTypedArray()
+        resources.getStringArray(id) `should be equal to` textArray.map { it.toString() }.toTypedArray()
     }
 }
