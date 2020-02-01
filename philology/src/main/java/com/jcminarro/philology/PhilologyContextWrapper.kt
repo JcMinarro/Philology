@@ -14,7 +14,7 @@ internal class PhilologyContextWrapper(base: Context) : ContextWrapper(base) {
         if (VectorEnabledTintResources.shouldBeUsed()) {
             PhilologyVectorEnabledTintResources(this, baseResources)
         } else {
-            PhilologyResources(baseResources)
+            PhilologyResources(ResourcesUtil(baseResources))
         }
     }
 
