@@ -10,11 +10,11 @@ import androidx.appcompat.widget.VectorEnabledTintResources
 @SuppressLint("RestrictedApi")
 internal class PhilologyContextWrapper(base: Context) : ContextWrapper(base) {
     private val res: Resources by lazy {
-        val baseResources = super.getResources()
+        val resourcesUtil = ResourcesUtil(super.getResources())
         if (VectorEnabledTintResources.shouldBeUsed()) {
-            PhilologyVectorEnabledTintResources(this, baseResources)
+            PhilologyVectorEnabledTintResources(this, resourcesUtil)
         } else {
-            PhilologyResources(baseResources)
+            PhilologyResources(resourcesUtil)
         }
     }
 

@@ -14,8 +14,22 @@ import org.amshove.kluent.When
 import org.amshove.kluent.calling
 import org.amshove.kluent.mock
 import java.util.Locale
+import java.util.concurrent.ThreadLocalRandom
 
-fun createConfiguration(locale: Locale = Locale.ENGLISH): Configuration = mock<Configuration>().apply {
+private val charPool: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
+private val random
+	get() = ThreadLocalRandom.current()
+
+fun randomBoolean() = random.nextBoolean()
+fun randomInt() = random.nextInt()
+fun randomFloat() = random.nextFloat()
+fun randomString(size: Int = 20): String = (1..size)
+		.map { charPool[random.nextInt(0, charPool.size)] }
+		.joinToString(separator = "")
+fun createConfiguration(locale: Locale = Locale.ENGLISH): Configuration = mock<Configuration>()
+        .configureLocale(locale)
+
+fun Configuration.configureLocale(locale: Locale) = this.apply {
     @Suppress("DEPRECATION")
     this.locale = locale
     When calling this.locales doReturn LocaleList(locale)
