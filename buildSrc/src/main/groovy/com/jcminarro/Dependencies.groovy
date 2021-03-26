@@ -4,7 +4,7 @@ class Dependencies {
 
     private static String KOTLIN_VERSION = '1.3.61'
     private static String ANDROID_BUILD_TOOL_VERSION = '3.1.3'
-    private static String APP_COMPAT_VERSION = '1.0.0'
+    private static String APP_COMPAT_VERSION = '1.2.0'
     private static String ROBOLECTRIC_VERSION = '3.8'
     private static String JUNIT_VERSION = '4.12'
     private static String ANDROID_TEST_RUNNER_VERSION = '1.0.2'

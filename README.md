@@ -129,8 +129,9 @@ Wrap the `Activity` Context.
 Kotlin:
 ```kotlin
 class BaseActivity : AppCompatActivity() {
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(ViewPumpContextWrapper.wrap(Philology.wrap(newBase)))
+    private val delegateHolder = PhilologyAppCompatDelegateHolder()
+    override fun getDelegate() = delegateHolder.getDelegate(super.getDelegate()) {
+        ViewPumpContextWrapper.wrap(Philology.wrap(it))
     }
 }
 ```
@@ -138,9 +139,17 @@ class BaseActivity : AppCompatActivity() {
 Java:
 ```java
 public class BaseActivity extends AppCompatActivity {
+    private final PhilologyAppCompatDelegateHolder delegateHolder = new PhilologyAppCompatDelegateHolder();
+
+    @NonNull
     @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(ViewPumpContextWrapper.wrap(Philology.INSTANCE.wrap(newBase)));
+    public AppCompatDelegate getDelegate() {
+        return delegateHolder.getDelegate(super.getDelegate(), new Function1<Context, Context>() {
+                    @Override
+                    public Context invoke(Context context) {
+                        return ViewPumpContextWrapper.wrap(Philology.INSTANCE.wrap(context));
+                    }
+                });
     }
 }
 ```
