@@ -130,18 +130,26 @@ Kotlin:
 ```kotlin
 class BaseActivity : AppCompatActivity() {
     private val delegateHolder = PhilologyAppCompatDelegateHolder()
-    override fun getDelegate() = delegateHolder.getDelegate(super.getDelegate())
+    override fun getDelegate() = delegateHolder.getDelegate(super.getDelegate()) {
+        ViewPumpContextWrapper.wrap(Philology.wrap(it))
+    }
 }
 ```
 
 Java:
 ```java
 public class BaseActivity extends AppCompatActivity {
-    private PhilologyAppCompatDelegateHolder delegateHolder = new PhilologyAppCompatDelegateHolder();
+    private final PhilologyAppCompatDelegateHolder delegateHolder = new PhilologyAppCompatDelegateHolder();
+
     @NonNull
     @Override
     public AppCompatDelegate getDelegate() {
-        return delegateHolder.getDelegate(super.getDelegate());
+        return delegateHolder.getDelegate(super.getDelegate(), new Function1<Context, Context>() {
+                    @Override
+                    public Context invoke(Context context) {
+                        return ViewPumpContextWrapper.wrap(Philology.INSTANCE.wrap(context));
+                    }
+                });
     }
 }
 ```

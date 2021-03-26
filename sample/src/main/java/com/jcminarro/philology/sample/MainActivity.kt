@@ -6,13 +6,17 @@ import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.jcminarro.philology.Philology
 import com.jcminarro.philology.PhilologyAppCompatDelegateHolder
 import com.jcminarro.sample.R
+import io.github.inflationx.viewpump.ViewPumpContextWrapper
 
 class MainActivity : AppCompatActivity() {
 
     private val delegateHolder = PhilologyAppCompatDelegateHolder()
-    override fun getDelegate() = delegateHolder.getDelegate(super.getDelegate())
+    override fun getDelegate() = delegateHolder.getDelegate(super.getDelegate()) {
+        ViewPumpContextWrapper.wrap(Philology.wrap(it))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
